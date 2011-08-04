@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>NWTiS parametri XML</comment>
+<entry key="server.database">jdbc:derby://localhost/</entry>
+<entry key="driver.database">org.apache.derby.jdbc.ClientDriver</entry>
+<entry key="admin.username">root</entry>
+<entry key="admin.password">root</entry>
+<entry key="admin.database">nwtis_msimicic_bp_2</entry>
+<entry key="user.username">root</entry>
+<entry key="user.password">root</entry>
+<entry key="user.database">nwtis_msimicic_bp_2</entry>
+<entry key="smtp">localhost</entry>
+<entry key="pop3">localhost</entry>
+<entry key="pop3_username">msimicic</entry>
+<entry key="pop3_password">123456</entry>
+<entry key="interval">50</entry>
+</properties>

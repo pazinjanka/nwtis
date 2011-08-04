@@ -1,0 +1,116 @@
+<project name="msimicic_aplikacija_1" basedir=".">
+	<property file="database.properties"/>
+	<property name="derby.driver" value="${derby.driver}"/>
+	<property name="derby.url" value="${derby.url}"/>
+	<property name="derby.user" value="${derby.user}"/>
+	<property name="derby.pass" value="${derby.pass}"/>
+
+	
+	<!-- Derby baza: nwtis_msimicic_bp_2 -->
+	<target name="kreirajBazuDerby">
+	<sql url="${derby.url}${database.derby};requireAuthentication=true;user=${user.name};password=${user.pass};create=true;"
+            driver="${derby.driver}"
+            userid="${derby.user}"
+            password="${derby.pass}">
+		   CREATE TABLE table (
+              id int
+            );
+            DROP TABLE table;
+		</sql>
+   </target>
+
+   <target name="obrisiBazuDerby">
+      <delete dir="C:\Users\Martina\.netbeans-derby\${database.derby}" includeEmptyDirs="true"/>
+   </target>
+   
+   <target name="kreirajTabliceDerby">
+      <sql driver="${derby.driver}" url="${derby.url}" userid="${derby.user}" password="${derby.pass}" >
+                CREATE TABLE states (
+                  STATE varchar(2) NOT NULL,
+                  NAME varchar(50) NOT NULL,
+                  PRIMARY KEY (STATE)
+                );
+
+                CREATE TABLE counties (
+                  STATE varchar(2) NOT NULL,
+                  COUNTY varchar(30) NOT NULL,
+                  NAME varchar(30) NOT NULL,
+                  PRIMARY KEY (STATE,COUNTY),
+                  CONSTRAINT COUNTIES_FK1 FOREIGN KEY (STATE) REFERENCES states (STATE)
+                );
+
+                CREATE TABLE cities (
+                  STATE varchar(2) NOT NULL,
+                  COUNTY varchar(30) NOT NULL,
+                  CITY varchar(30) NOT NULL,
+                  NAME varchar(30) NOT NULL,
+                  PRIMARY KEY (STATE,COUNTY,CITY),
+                  CONSTRAINT CITIES_FK1 FOREIGN KEY (STATE, COUNTY) REFERENCES counties (STATE, COUNTY)
+                );
+
+                CREATE TABLE zip_codes (
+                  ZIP int NOT NULL,
+                  LATITUDE double NOT NULL,
+                  LONGITUDE double NOT NULL,
+                  CITY varchar(30) NOT NULL,
+                  STATE varchar(2) NOT NULL,
+                  COUNTY varchar(30) NOT NULL,
+                  ZIP_CLASS varchar(20) NOT NULL,
+                  PRIMARY KEY (ZIP),
+                  CONSTRAINT ZIP_CODES_FK1 FOREIGN KEY (STATE, COUNTY, CITY) REFERENCES cities (STATE, COUNTY, CITY)
+                );
+		
+				CREATE TABLE korisnici (
+				  kor_ime char(10) NOT NULL DEFAULT '',
+				  ime char(25) NOT NULL DEFAULT '',
+				  prezime char(25) NOT NULL DEFAULT '',
+				  lozinka char(20) NOT NULL DEFAULT '',
+				  email_adresa char(40) NOT NULL DEFAULT '',
+				  vrsta int NOT NULL DEFAULT 1,  
+				  datum_kreiranja timestamp,
+				  datum_promjene timestamp,
+				  PRIMARY KEY (kor_ime)
+				);
+			
+				CREATE TABLE mycities (
+				  zip int NOT NULL,
+				  PRIMARY KEY (zip)
+				);
+				
+				CREATE TABLE zahtjevi(
+					zahtjev_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+					posiljatelj varchar(255) NOT NULL,
+					datum timestamp NOT NULL,
+					komanda varchar(255) not null,
+					vrsta char(20) not null,
+					sadrzaj varchar(255) not null,
+					ispravna char(1),
+					PRIMARY KEY (zahtjev_id)
+				);
+				
+				CREATE TABLE dnevnik (
+					dnevnik_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+					datumOd timestamp not null,
+					datumDo timestamp not null,
+					brojProcitanih int not null,
+					brojNwtis int not null,
+					brojIspravnih int not null,
+					PRIMARY KEY (dnevnik_id)
+				);
+				
+				CREATE TABLE putovanje (
+					putovanje_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+					kor_ime char(10) not null default '',
+					gradovi varchar(255) not null,
+					CONSTRAINT korisnici_FK1 FOREIGN KEY (kor_ime) REFERENCES korisnici (kor_ime),
+					PRIMARY KEY (putovanje_id)
+				);
+      </sql>
+	</target>
+   
+    <target name="popuniBazuDerby">
+      <sql driver="${derby.driver}" url="${derby.url}${database.derby}" userid="${derby.user}" password="${derby.pass}" >
+		<transaction src="nwtis_g1.sql"/>
+      </sql>
+   </target>
+</project>

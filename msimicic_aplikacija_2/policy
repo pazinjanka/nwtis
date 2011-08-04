@@ -1,0 +1,7 @@
+/* AUTOMATICALLY GENERATED ON Sun Jun 05 23:52:31 BST 2011*/
+/* DO NOT EDIT */
+
+grant signedBy "kljucevi.jks",  codeBase "http://localhost:8080/msimicic_aplikacija_2/sadrzaj/*" {
+  permission javax.net.ssl.SSLPermission "getSSLSessionContext", signedBy "kljucevi.jks";
+};
+

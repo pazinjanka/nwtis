@@ -1,0 +1,136 @@
+<project name="msimicic_aplikacija_1" basedir=".">
+	<property file="database.properties"/>
+	<property name="sql.driver" value="${sql.driver}"/>
+	<property name="sql.url" value="${sql.url}"/>
+	<property name="sql.user" value="${sql.user}"/>
+	<property name="sql.pass" value="${sql.pass}"/>
+
+	
+	<!-- MySql baza: nwtis_msimicic_bp_1 -->
+	<target name="kreirajBazuMySql">
+      <sql driver="${sql.driver}" 
+           url="${sql.url}" 
+           userid="${sql.user}" 
+           password="${sql.pass}"
+           classpath="C:\Program Files\NetBeans 7.0\ide\modules\ext\mysql-connector-java-5.1.13-bin.jar">
+		CREATE DATABASE IF NOT EXISTS ${database.mysql};
+	  </sql>
+   </target>
+
+   <target name="obrisiBazuMySql">
+      <input message="Zelite li obrisati bazu (d/n)?" validargs="d,n" addproperty="do.delete" /> 
+      <condition property="do.abort"> 
+            <equals arg1="n" arg2="${do.delete}"/> 
+      </condition> 
+      <fail if="do.abort">Greska u postupku brisanja baze.</fail> 
+      <sql driver="${sql.driver}" url="${sql.url}" userid="${sql.user}" password="${sql.pass}" >
+		<classpath>
+			<pathelement location="C:\Program Files\NetBeans 7.0\ide\modules\ext\mysql-connector-java-5.1.13-bin.jar"/>
+        </classpath>  
+		DROP USER '${user.name}'@'127.0.0.1';
+        DROP DATABASE IF EXISTS ${database.mysql};
+      </sql>
+   </target>
+   
+   <target name="kreirajTabliceMySql">
+      <sql driver="${sql.driver}" url="${sql.url}" userid="${sql.user}" password="${sql.pass}" >
+        <classpath>
+			<pathelement location="C:\Program Files\NetBeans 7.0\ide\modules\ext\mysql-connector-java-5.1.13-bin.jar"/>
+        </classpath>   
+        use nwtis_msimicic_bp_1;
+		
+		CREATE TABLE korisnici (
+		  kor_ime char(10) NOT NULL DEFAULT '',
+		  ime char(25) NOT NULL DEFAULT '',
+		  prezime char(25) NOT NULL DEFAULT '',
+		  lozinka char(20) NOT NULL DEFAULT '',
+		  email_adresa char(40) NOT NULL DEFAULT '',
+		  vrsta int NOT NULL DEFAULT 1,  
+		  datum_kreiranja timestamp,
+		  datum_promjene timestamp,
+		  PRIMARY KEY (kor_ime)
+		);
+
+		CREATE TABLE grupe (
+		  gr_ime char(10) NOT NULL DEFAULT '',
+		  naziv char(25) NOT NULL DEFAULT '',
+		  PRIMARY KEY (gr_ime)
+		);
+
+		CREATE TABLE korisnici_grupe (
+		  kor_ime char(10) NOT NULL DEFAULT '',
+		  gr_ime char(10) NOT NULL DEFAULT '',
+		  PRIMARY KEY (kor_ime, gr_ime),
+		  CONSTRAINT korisnici_grupe_FK1 FOREIGN KEY (kor_ime) REFERENCES korisnici (kor_ime),
+		  CONSTRAINT korisnici_grupe_FK12 FOREIGN KEY (gr_ime) REFERENCES grupe (gr_ime)  
+		);
+		
+		CREATE TABLE mycities (
+		  zip int(11) NOT NULL,
+		  PRIMARY KEY (zip)
+		);
+		
+		CREATE TABLE meteo_podaci (
+			meteo_podatak_id int NOT NULL AUTO_INCREMENT,
+			currIcon varchar(50) not null,
+			currDesc varchar(50) not null,
+			gustWindSpeed varchar(50) not null,
+			gustWindSpeedUnit varchar(50) not null,
+			gustWindDirectionString varchar(50) not null,
+			obDate varchar(50) not null,
+			obDateTime datetime not null,
+			rainToday char(50) not null,
+			rainUnit char(50) not null,
+			state char(50) not null,
+			stationIDRequested char(50) not null,
+			stationIDReturned char(50) not null,
+			stationName char(50) not null,
+			temperature char(50) not null,
+			temperatureUnit char(50) not null,
+			timeZone char(50) not null,
+			timeZoneOffset double(5,2) not null,
+			windDirection char(50) not null,
+			windSpeed char(50) not null,
+			windSpeedUnit char(50) not null,
+			zip int(11) not null,
+			city char(50) not null,
+			county char(50) not null,
+			PRIMARY KEY (meteo_podatak_id)
+		);
+		
+		CREATE TABLE zahtjevi(
+			zahtjev_id int NOT NULL AUTO_INCREMENT,
+			tip char(255) NOT NULL,
+			dateOd datetime NOT NULL,
+			dateDo datetime NOT NULL,
+			PRIMARY KEY (zahtjev_id)
+		);
+      </sql>
+   </target>
+   
+    <target name="dodajKorisnikaMySql">
+        <sql url="${sql.url}"
+            driver="${sql.driver}"
+            userid="${sql.user}"
+            password="${sql.pass}">
+            <classpath>
+                <pathelement location="C:\Program Files\NetBeans 7.0\ide\modules\ext\mysql-connector-java-5.1.13-bin.jar"/>
+            </classpath>
+            CREATE USER '${user.name}'@'127.0.0.1' IDENTIFIED BY '${user.pass}';
+            GRANT ALL ON ${database.mysql}.* TO '${user.name}'@'127.0.0.1';
+        </sql>
+    </target>
+   
+      <target name="popuniBazuMySql">
+      <sql driver="${sql.driver}" url="${sql.url}" userid="${sql.user}" password="${sql.pass}" >
+        <classpath>
+			<pathelement location="C:\Program Files\NetBeans 7.0\ide\modules\ext\mysql-connector-java-5.1.13-bin.jar"/>
+        </classpath>  
+		<transaction src="korisniciPodaci.sql"/>
+		<transaction src="grupePodaci.sql"/>
+		<transaction src="mycitiesPodaci.sql"/>
+      </sql>
+   </target>
+
+   
+</project>

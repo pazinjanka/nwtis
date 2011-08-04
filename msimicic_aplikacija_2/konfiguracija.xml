@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>NWTiS parametri XML</comment>
+<entry key="server.database">jdbc:mysql://127.0.0.1:3306/</entry>
+<entry key="driver.database">com.mysql.jdbc.Driver</entry>
+<entry key="admin.username">root</entry>
+<entry key="admin.password">root</entry>
+<entry key="admin.database">nwtis_msimicic_bp_1</entry>
+<entry key="user.username">msimicic</entry>
+<entry key="user.password">msimicic</entry>
+<entry key="user.database">nwtis_msimicic_bp_1</entry>
+<entry key="driver.database">com.mysql.jdbc.Driver</entry>
+<entry key="interval">60</entry>
+</properties>
