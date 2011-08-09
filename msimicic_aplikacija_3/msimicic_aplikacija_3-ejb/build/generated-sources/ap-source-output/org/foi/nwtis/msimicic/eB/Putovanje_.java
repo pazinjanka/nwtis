@@ -5,7 +5,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import org.foi.nwtis.msimicic.eB.Korisnici;
 
-@Generated(value="EclipseLink-2.2.0.v20110202-r8913", date="2011-07-06T21:38:47")
+@Generated(value="EclipseLink-2.2.0.v20110202-r8913", date="2011-08-09T23:58:28")
 @StaticMetamodel(Putovanje.class)
 public class Putovanje_ { 
 
