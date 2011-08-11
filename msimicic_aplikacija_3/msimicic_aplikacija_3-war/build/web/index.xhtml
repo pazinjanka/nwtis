@@ -9,12 +9,12 @@
     </h:head>
     <h:body>
         #{i18n.application_welcome_text}
+        #{i18n.odaberi_jezik}
         <h:form>
-            #{i18n.odaberi_jezik}
-            <h:selectOneRadio value="#{lokalizacija.odabraniJezik}" valueChangeListener="#{lokalizacija.setOdabraniJezik}">
+            <h:selectOneRadio id="jezik" value="#{lokalizacija.odabraniJezik}" valueChangeListener="#{lokalizacija.setOdabraniJezik(jezik.value)}">
                 <f:selectItems value="#{lokalizacija.jezici}"/>
             </h:selectOneRadio><br/>
-            <h:commandButton value="Postavi jezik" action="#{lokalizacija.postaviLocalizaciju}"/>
+            <h:commandButton value="Postavi jezik" action="#{lokalizacija.postaviLocalizaciju()}" />
         </h:form>
     </h:body>
 </html>
