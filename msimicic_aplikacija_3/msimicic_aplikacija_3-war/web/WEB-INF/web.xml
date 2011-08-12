@@ -19,11 +19,11 @@
     </context-param>
     <context-param>
         <param-name>mailUser</param-name>
-        <param-value>root</param-value>
+        <param-value>msimicic</param-value>
     </context-param>
     <context-param>
         <param-name>mailPass</param-name>
-        <param-value>root</param-value>
+        <param-value>msimicic</param-value>
     </context-param>
     
     <!-- JSF mapping -->
