@@ -18,6 +18,7 @@ public class KorisniciFacade extends AbstractFacade<Korisnici> {
     @PersistenceContext(unitName = "msimicic_aplikacija_3-ejbPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }

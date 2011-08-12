@@ -7,7 +7,6 @@ package org.foi.nwtis.msimicic.aplikacija;
 import javax.ejb.EJB;
 import org.foi.nwtis.msimicic.eB.Korisnici;
 import org.foi.nwtis.msimicic.sB.KorisniciFacade;
-import org.foi.nwtis.msimicic.sB.ZahtjeviFacade;
 
 /**
  *

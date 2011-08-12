@@ -14,5 +14,5 @@
 <entry key="pop3">localhost</entry>
 <entry key="pop3_username">msimicic</entry>
 <entry key="pop3_password">123456</entry>
-<entry key="interval">50</entry>
+<entry key="interval">10</entry>
 </properties>
