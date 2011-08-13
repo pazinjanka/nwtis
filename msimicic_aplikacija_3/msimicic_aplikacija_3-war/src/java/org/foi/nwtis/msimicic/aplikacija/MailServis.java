@@ -71,9 +71,10 @@ public class MailServis extends Thread {
             interval = Integer.parseInt(sc.getInitParameter("interval"));
                         
             java.util.Properties properties = System.getProperties();
-            properties.put("mail.smtp.host", smtpHost);
-            session = Session.getInstance(properties, null);
+            properties.setProperty("mail.smtp.host", smtpHost);
+            session = Session.getDefaultInstance(properties);
             store = session.getStore("pop3");
+        
             store.connect(pop3, user, pass);
             folder = store.getFolder("INBOX");
             folder.open(Folder.READ_WRITE);

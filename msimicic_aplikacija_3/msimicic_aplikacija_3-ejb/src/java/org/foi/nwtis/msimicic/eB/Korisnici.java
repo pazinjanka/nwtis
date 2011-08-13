@@ -79,7 +79,7 @@ public class Korisnici implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date datumPromjene;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "korIme")
-    private Collection<Putovanje> putovanjeCollection;
+    private Collection<Putovanja> putovanjaCollection;
 
     public Korisnici() {
     }
@@ -162,12 +162,12 @@ public class Korisnici implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Putovanje> getPutovanjeCollection() {
-        return putovanjeCollection;
+    public Collection<Putovanja> getPutovanjaCollection() {
+        return putovanjaCollection;
     }
 
-    public void setPutovanjeCollection(Collection<Putovanje> putovanjeCollection) {
-        this.putovanjeCollection = putovanjeCollection;
+    public void setPutovanjaCollection(Collection<Putovanja> putovanjaCollection) {
+        this.putovanjaCollection = putovanjaCollection;
     }
 
     @Override
