@@ -6,6 +6,7 @@ package org.foi.nwtis.msimicic.aplikacija;
 
 import javax.servlet.ServletContext;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -22,6 +23,7 @@ public class MailServis extends Thread {
     String smtpHost;
     String user;
     String pass;
+
     
     /**
      * 
@@ -123,19 +125,63 @@ public class MailServis extends Thread {
     public void sendMail() throws MessagingException, SQLException {
         String from = user + "@" + smtpHost;
         String to = from;
+        String content = null;
+                
+        String login = "user('pero', '123456');";
+        // OPTIONS:
+        //0 -- "newUser('pero', 'Pero', 'Kos', '123456')"
+        //1 -- "data()"
+        //2 -- "data (10451, 7)"
+        //3 -- "data ('2010-02-01 00:00:00',  '2010-02-01 08:00:00');"
+        //4 -- "forecast (10451, 5)"
+        //5 -- "stopforecast (10451)"
         
-        String content = "This is Test Message.";
+        Random randomGenerator = new Random();
+        int code;
+        for (int i=0; i<5; i++){
+            int randomInt = randomGenerator.nextInt(5);
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Calendar calendar1 = calendar;
+            switch (randomInt) {
+                case 0:
+                    code = randomGenerator.nextInt(50000);
+                    content = "newUser('"+code+"', 'Pero" + code +"', 'Kos" + code +"', '" + code +"');";
+                    break;
+                case 1:
+                    content = login + "|data();";
+                    break;
+                case 2:
+                    code = randomGenerator.nextInt(90000) + 10000;
+                    content = login +"|data('"+ code +"', 7);";
+                    break;
+                case 3:
+                    content = login +"|data('2010-02-01 00:00:00',  '2010-02-01 08:00:00');";
+                    break;
+                case 4:
+                    code = randomGenerator.nextInt(90000) + 10000;
+                    content = login +"|forecast('"+ code +"', 5);";
+                    break;
+                case 5:
+                    code = randomGenerator.nextInt(90000) + 10000;
+                    content = login +"|stopforecast('"+ code +"');";
+                    break;
+            }
+                
+        
         Properties properties = System.getProperties();
         properties.setProperty("mail.smtp.host", smtpHost);
         Session session = Session.getDefaultInstance(properties);
+        
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(from));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
         message.setSubject("Test Mail");
         message.setText(content);
         Transport.send(message);
+        
         System.out.println("Message Send SuccessFully..." + content);
-
+        }
         /*
         Connection conn = null;
         String url = "jdbc:mysql://localhost:3306/";
