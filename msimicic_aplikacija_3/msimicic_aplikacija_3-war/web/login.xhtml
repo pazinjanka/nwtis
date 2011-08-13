@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>#{i18n.login_title}</title>
+    </h:head>
+    <h:body>
+        <h2>#{i18n.zahtjev_za_kor_podacima}:</h2>
+        <h:form>
+            #{i18n.kor_ime}: <h:inputText id="kor_ime" value="#{Login.kor_ime}"/><br/>
+            #{i18n.lozinka}: <h:inputSecret id="lozinka" value="#{Login.lozinka}"/><br/>
+            <h:commandButton value="Login" action="#{Login.prijava()}"/>
+        </h:form>
+    </h:body>
+</html>
+
