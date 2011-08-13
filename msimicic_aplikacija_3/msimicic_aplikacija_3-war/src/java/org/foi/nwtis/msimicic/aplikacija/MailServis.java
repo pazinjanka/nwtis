@@ -126,6 +126,7 @@ public class MailServis extends Thread {
         String from = user + "@" + smtpHost;
         String to = from;
         String content = null;
+        String subject = null;
                 
         String login = "user('pero', '123456');";
         // OPTIONS:
@@ -139,35 +140,41 @@ public class MailServis extends Thread {
         Random randomGenerator = new Random();
         int code;
         for (int i=0; i<5; i++){
-            int randomInt = randomGenerator.nextInt(5);
-            Calendar calendar = Calendar.getInstance();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Calendar calendar1 = calendar;
+            int randomInt = randomGenerator.nextInt(6);
             switch (randomInt) {
                 case 0:
+                    subject = "NWTiS";
                     code = randomGenerator.nextInt(50000);
                     content = "newUser('"+code+"', 'Pero" + code +"', 'Kos" + code +"', '" + code +"');";
                     break;
                 case 1:
+                    subject = "NWTiS";
                     content = login + "|data();";
                     break;
                 case 2:
+                    subject = "NWTiS";
                     code = randomGenerator.nextInt(90000) + 10000;
                     content = login +"|data('"+ code +"', 7);";
                     break;
                 case 3:
+                    subject = "NWTiS";
                     content = login +"|data('2010-02-01 00:00:00',  '2010-02-01 08:00:00');";
                     break;
                 case 4:
+                    subject = "NWTiS";
                     code = randomGenerator.nextInt(90000) + 10000;
                     content = login +"|forecast('"+ code +"', 5);";
                     break;
                 case 5:
+                    subject = "NWTiS";
                     code = randomGenerator.nextInt(90000) + 10000;
                     content = login +"|stopforecast('"+ code +"');";
                     break;
+                case 6:
+                    subject = "Fake email";
+                    content = "Fake email content...";
+                    break;
             }
-                
         
         Properties properties = System.getProperties();
         properties.setProperty("mail.smtp.host", smtpHost);
@@ -176,7 +183,7 @@ public class MailServis extends Thread {
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(from));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-        message.setSubject("Test Mail");
+        message.setSubject(subject);
         message.setText(content);
         Transport.send(message);
         

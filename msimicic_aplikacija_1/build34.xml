@@ -7,24 +7,65 @@
 
 	
 	<!-- Derby baza: nwtis_msimicic_bp_2 -->
+	<!-- Kreiranje baze -->
 	<target name="kreirajBazuDerby">
-	<sql url="${derby.url}${database.derby};requireAuthentication=true;user=${user.name};password=${user.pass};create=true;"
+		<sql url="${derby.create}"
+			driver="${derby.driver}"
+            userid="${derby.user}"
+            password="${derby.user}">
+			<classpath>
+                <pathelement location="C:\Program Files\Sun\JavaDB\lib\derbyclient.jar"/>
+            </classpath>		
+
+			CREATE TABLE temp (
+				value int
+				);
+			DROP TABLE temp;
+		</sql>
+		
+	</target>
+   
+   <!-- Brisanje tablica iz baze -->
+    <target name="obrisiTabliceDerby">
+        <echo>
+            Brisanje tablica iz baze podataka nwtis_msimicic_bp_2
+        </echo>
+        <sql url="${derby.url}/${database.derby}"
             driver="${derby.driver}"
             userid="${derby.user}"
             password="${derby.pass}">
-		   CREATE TABLE table (
-              id int
-            );
-            DROP TABLE table;
-		</sql>
-   </target>
+			<classpath>
+                <pathelement location="C:\Program Files\Sun\JavaDB\lib\derbyclient.jar"/>
+            </classpath>
 
-   <target name="obrisiBazuDerby">
+				DROP TABLE obradjene_poruke;
+                DROP TABLE poslane_poruke;
+				DROP TABLE dnevnik;
+                DROP TABLE putovanja;
+                DROP TABLE korisnici;
+                DROP TABLE mycities;
+				DROP TABLE zip_codes;
+				DROP TABLE cities;
+				DROP TABLE counties;                
+                DROP TABLE states;           
+                
+        </sql>
+    </target>
+
+	<!-- Brisanje baze -->
+   <target name="obrisiBazuDerby" depends="obrisiTabliceDerby">
       <delete dir="C:\Users\Martina\.netbeans-derby\${database.derby}" includeEmptyDirs="true"/>
    </target>
    
-   <target name="kreirajTabliceDerby">
-      <sql driver="${derby.driver}" url="${derby.url}" userid="${derby.user}" password="${derby.pass}" >
+   <!-- Kreiranje tablice za bazu -->
+   <target name="kreirajTabliceDerby" depends="kreirajBazuDerby">
+      <sql 	url="${derby.url}/${database.derby};requireAuthentication=true;user=root;password=root;" 
+			driver="${derby.driver}" 
+			userid="${derby.user}" 
+			password="${derby.pass}" >
+			<classpath>
+                <pathelement location="C:\Program Files\Sun\JavaDB\lib\derbyclient.jar"/>
+            </classpath>
                 CREATE TABLE states (
                   STATE varchar(2) NOT NULL,
                   NAME varchar(50) NOT NULL,
@@ -77,15 +118,26 @@
 				  PRIMARY KEY (zip)
 				);
 				
-				CREATE TABLE zahtjevi(
-					zahtjev_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+				CREATE TABLE obradjene_poruke(
+					obradjena_poruka_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+					primatelj varchar(255),
 					posiljatelj varchar(255) NOT NULL,
 					datum timestamp NOT NULL,
-					komanda varchar(255) not null,
-					vrsta char(20) not null,
+					naslov varchar(255) not null,
 					sadrzaj varchar(255) not null,
+					vrsta char(20) not null,
 					ispravna char(1),
-					PRIMARY KEY (zahtjev_id)
+					PRIMARY KEY (obradjena_poruka_id)
+				);
+				
+				CREATE TABLE poslane_poruke (
+					poslana_poruka_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+					primatelj varchar(255),
+					posiljatelj varchar(255) NOT NULL,
+					datum timestamp NOT NULL,
+					naslov varchar(255) not null,
+					sadrzaj varchar(255) not null,
+					PRIMARY KEY (poslana_poruka_id)
 				);
 				
 				CREATE TABLE dnevnik (
@@ -98,7 +150,7 @@
 					PRIMARY KEY (dnevnik_id)
 				);
 				
-				CREATE TABLE putovanje (
+				CREATE TABLE putovanja (
 					putovanje_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
 					kor_ime char(10) not null default '',
 					gradovi varchar(255) not null,
@@ -108,9 +160,17 @@
       </sql>
 	</target>
    
-    <target name="popuniBazuDerby">
-      <sql driver="${derby.driver}" url="${derby.url}${database.derby}" userid="${derby.user}" password="${derby.pass}" >
-		<transaction src="nwtis_g1.sql"/>
+    <target name="popuniBazuDerby1">
+      <sql driver="${derby.driver}" url="${derby.url}/${database.derby};requireAuthentication=true;user=root;password=root;" userid="${derby.user}" password="${derby.pass}" >
+		<classpath>
+                <pathelement location="C:\Program Files\Sun\JavaDB\lib\derbyclient.jar"/>
+        </classpath>
+		<transaction src="states.sql"/>
+		<transaction src="counties.sql"/>
+		<transaction src="cities.sql"/>
+		<transaction src="zip_codes.sql"/>
+		<transaction src="korisnici.sql"/>
       </sql>
    </target>
+
 </project>
