@@ -38,155 +38,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ApiAlertData }
+     * Create an instance of {@link ApiForecastData }
      * 
      */
-    public ApiAlertData createApiAlertData() {
-        return new ApiAlertData();
-    }
-
-    /**
-     * Create an instance of {@link GetLiveCompactWeatherByCityCodeResponse }
-     * 
-     */
-    public GetLiveCompactWeatherByCityCodeResponse createGetLiveCompactWeatherByCityCodeResponse() {
-        return new GetLiveCompactWeatherByCityCodeResponse();
-    }
-
-    /**
-     * Create an instance of {@link ApiForecastIssueData }
-     * 
-     */
-    public ApiForecastIssueData createApiForecastIssueData() {
-        return new ApiForecastIssueData();
-    }
-
-    /**
-     * Create an instance of {@link GetStationListByCityCode }
-     * 
-     */
-    public GetStationListByCityCode createGetStationListByCityCode() {
-        return new GetStationListByCityCode();
-    }
-
-    /**
-     * Create an instance of {@link LiveWeatherData }
-     * 
-     */
-    public LiveWeatherData createLiveWeatherData() {
-        return new LiveWeatherData();
-    }
-
-    /**
-     * Create an instance of {@link ApiStationData }
-     * 
-     */
-    public ApiStationData createApiStationData() {
-        return new ApiStationData();
-    }
-
-    /**
-     * Create an instance of {@link ApiLocationData }
-     * 
-     */
-    public ApiLocationData createApiLocationData() {
-        return new ApiLocationData();
-    }
-
-    /**
-     * Create an instance of {@link GetLiveWeatherByUSZipCodeResponse }
-     * 
-     */
-    public GetLiveWeatherByUSZipCodeResponse createGetLiveWeatherByUSZipCodeResponse() {
-        return new GetLiveWeatherByUSZipCodeResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetForecastByUSZipCodeResponse }
-     * 
-     */
-    public GetForecastByUSZipCodeResponse createGetForecastByUSZipCodeResponse() {
-        return new GetForecastByUSZipCodeResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetLiveCompactWeatherByUSZipCodeResponse }
-     * 
-     */
-    public GetLiveCompactWeatherByUSZipCodeResponse createGetLiveCompactWeatherByUSZipCodeResponse() {
-        return new GetLiveCompactWeatherByUSZipCodeResponse();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfAnyType }
-     * 
-     */
-    public ArrayOfAnyType createArrayOfAnyType() {
-        return new ArrayOfAnyType();
-    }
-
-    /**
-     * Create an instance of {@link GetLiveWeatherByStationID }
-     * 
-     */
-    public GetLiveWeatherByStationID createGetLiveWeatherByStationID() {
-        return new GetLiveWeatherByStationID();
-    }
-
-    /**
-     * Create an instance of {@link GetAlertsIssueData }
-     * 
-     */
-    public GetAlertsIssueData createGetAlertsIssueData() {
-        return new GetAlertsIssueData();
-    }
-
-    /**
-     * Create an instance of {@link GetAlertsDataListResponse }
-     * 
-     */
-    public GetAlertsDataListResponse createGetAlertsDataListResponse() {
-        return new GetAlertsDataListResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetLiveCompactWeatherByStationIDResponse }
-     * 
-     */
-    public GetLiveCompactWeatherByStationIDResponse createGetLiveCompactWeatherByStationIDResponse() {
-        return new GetLiveCompactWeatherByStationIDResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetStationListByUSZipCodeResponse }
-     * 
-     */
-    public GetStationListByUSZipCodeResponse createGetStationListByUSZipCodeResponse() {
-        return new GetStationListByUSZipCodeResponse();
-    }
-
-    /**
-     * Create an instance of {@link LocationUSWorldCityData }
-     * 
-     */
-    public LocationUSWorldCityData createLocationUSWorldCityData() {
-        return new LocationUSWorldCityData();
-    }
-
-    /**
-     * Create an instance of {@link GetLiveWeatherByUSZipCode }
-     * 
-     */
-    public GetLiveWeatherByUSZipCode createGetLiveWeatherByUSZipCode() {
-        return new GetLiveWeatherByUSZipCode();
-    }
-
-    /**
-     * Create an instance of {@link GetStationListByUSZipCode }
-     * 
-     */
-    public GetStationListByUSZipCode createGetStationListByUSZipCode() {
-        return new GetStationListByUSZipCode();
+    public ApiForecastData createApiForecastData() {
+        return new ApiForecastData();
     }
 
     /**
@@ -198,35 +54,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetLiveCompactWeatherByStationID }
+     * Create an instance of {@link GetLiveWeatherByStationIDResponse }
      * 
      */
-    public GetLiveCompactWeatherByStationID createGetLiveCompactWeatherByStationID() {
-        return new GetLiveCompactWeatherByStationID();
+    public GetLiveWeatherByStationIDResponse createGetLiveWeatherByStationIDResponse() {
+        return new GetLiveWeatherByStationIDResponse();
     }
 
     /**
-     * Create an instance of {@link GetForecastByCityCodeResponse }
+     * Create an instance of {@link ArrayOfAnyType }
      * 
      */
-    public GetForecastByCityCodeResponse createGetForecastByCityCodeResponse() {
-        return new GetForecastByCityCodeResponse();
+    public ArrayOfAnyType createArrayOfAnyType() {
+        return new ArrayOfAnyType();
     }
 
     /**
-     * Create an instance of {@link GetUSWorldCityByLatLong }
+     * Create an instance of {@link GetLiveCompactWeatherByCityCodeResponse }
      * 
      */
-    public GetUSWorldCityByLatLong createGetUSWorldCityByLatLong() {
-        return new GetUSWorldCityByLatLong();
-    }
-
-    /**
-     * Create an instance of {@link GetForecastIssueDetailsByUSZipCodeResponse }
-     * 
-     */
-    public GetForecastIssueDetailsByUSZipCodeResponse createGetForecastIssueDetailsByUSZipCodeResponse() {
-        return new GetForecastIssueDetailsByUSZipCodeResponse();
+    public GetLiveCompactWeatherByCityCodeResponse createGetLiveCompactWeatherByCityCodeResponse() {
+        return new GetLiveCompactWeatherByCityCodeResponse();
     }
 
     /**
@@ -238,27 +86,91 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetLiveWeatherByStationIDResponse }
+     * Create an instance of {@link GetForecastByUSZipCodeResponse }
      * 
      */
-    public GetLiveWeatherByStationIDResponse createGetLiveWeatherByStationIDResponse() {
-        return new GetLiveWeatherByStationIDResponse();
+    public GetForecastByUSZipCodeResponse createGetForecastByUSZipCodeResponse() {
+        return new GetForecastByUSZipCodeResponse();
     }
 
     /**
-     * Create an instance of {@link GetLiveWeatherByCityCodeResponse }
+     * Create an instance of {@link GetForecastIssueDetailsByUSZipCodeResponse }
      * 
      */
-    public GetLiveWeatherByCityCodeResponse createGetLiveWeatherByCityCodeResponse() {
-        return new GetLiveWeatherByCityCodeResponse();
+    public GetForecastIssueDetailsByUSZipCodeResponse createGetForecastIssueDetailsByUSZipCodeResponse() {
+        return new GetForecastIssueDetailsByUSZipCodeResponse();
     }
 
     /**
-     * Create an instance of {@link GetForecastByUSZipCode }
+     * Create an instance of {@link GetForecastIssueDetailsByCityCode }
      * 
      */
-    public GetForecastByUSZipCode createGetForecastByUSZipCode() {
-        return new GetForecastByUSZipCode();
+    public GetForecastIssueDetailsByCityCode createGetForecastIssueDetailsByCityCode() {
+        return new GetForecastIssueDetailsByCityCode();
+    }
+
+    /**
+     * Create an instance of {@link GetLocationList }
+     * 
+     */
+    public GetLocationList createGetLocationList() {
+        return new GetLocationList();
+    }
+
+    /**
+     * Create an instance of {@link GetLiveCompactWeatherByStationID }
+     * 
+     */
+    public GetLiveCompactWeatherByStationID createGetLiveCompactWeatherByStationID() {
+        return new GetLiveCompactWeatherByStationID();
+    }
+
+    /**
+     * Create an instance of {@link GetStationListByCityCodeResponse }
+     * 
+     */
+    public GetStationListByCityCodeResponse createGetStationListByCityCodeResponse() {
+        return new GetStationListByCityCodeResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetForecastByCityCode }
+     * 
+     */
+    public GetForecastByCityCode createGetForecastByCityCode() {
+        return new GetForecastByCityCode();
+    }
+
+    /**
+     * Create an instance of {@link ApiAlertData }
+     * 
+     */
+    public ApiAlertData createApiAlertData() {
+        return new ApiAlertData();
+    }
+
+    /**
+     * Create an instance of {@link ApiForecastIssueData }
+     * 
+     */
+    public ApiForecastIssueData createApiForecastIssueData() {
+        return new ApiForecastIssueData();
+    }
+
+    /**
+     * Create an instance of {@link GetLiveWeatherByUSZipCodeResponse }
+     * 
+     */
+    public GetLiveWeatherByUSZipCodeResponse createGetLiveWeatherByUSZipCodeResponse() {
+        return new GetLiveWeatherByUSZipCodeResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetLiveCompactWeatherByUSZipCodeResponse }
+     * 
+     */
+    public GetLiveCompactWeatherByUSZipCodeResponse createGetLiveCompactWeatherByUSZipCodeResponse() {
+        return new GetLiveCompactWeatherByUSZipCodeResponse();
     }
 
     /**
@@ -267,14 +179,6 @@ public class ObjectFactory {
      */
     public GetLiveWeatherByCityCode createGetLiveWeatherByCityCode() {
         return new GetLiveWeatherByCityCode();
-    }
-
-    /**
-     * Create an instance of {@link GetUSWorldCityByLatLongResponse }
-     * 
-     */
-    public GetUSWorldCityByLatLongResponse createGetUSWorldCityByLatLongResponse() {
-        return new GetUSWorldCityByLatLongResponse();
     }
 
     /**
@@ -294,59 +198,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetStationListByCityCodeResponse }
+     * Create an instance of {@link GetUSWorldCityByLatLong }
      * 
      */
-    public GetStationListByCityCodeResponse createGetStationListByCityCodeResponse() {
-        return new GetStationListByCityCodeResponse();
+    public GetUSWorldCityByLatLong createGetUSWorldCityByLatLong() {
+        return new GetUSWorldCityByLatLong();
     }
 
     /**
-     * Create an instance of {@link ApiAlertIssueData }
+     * Create an instance of {@link GetLiveWeatherByStationID }
      * 
      */
-    public ApiAlertIssueData createApiAlertIssueData() {
-        return new ApiAlertIssueData();
-    }
-
-    /**
-     * Create an instance of {@link GetForecastIssueDetailsByCityCode }
-     * 
-     */
-    public GetForecastIssueDetailsByCityCode createGetForecastIssueDetailsByCityCode() {
-        return new GetForecastIssueDetailsByCityCode();
-    }
-
-    /**
-     * Create an instance of {@link GetForecastIssueDetailsByUSZipCode }
-     * 
-     */
-    public GetForecastIssueDetailsByUSZipCode createGetForecastIssueDetailsByUSZipCode() {
-        return new GetForecastIssueDetailsByUSZipCode();
-    }
-
-    /**
-     * Create an instance of {@link ApiForecastData }
-     * 
-     */
-    public ApiForecastData createApiForecastData() {
-        return new ApiForecastData();
-    }
-
-    /**
-     * Create an instance of {@link GetLiveCompactWeatherByCityCode }
-     * 
-     */
-    public GetLiveCompactWeatherByCityCode createGetLiveCompactWeatherByCityCode() {
-        return new GetLiveCompactWeatherByCityCode();
-    }
-
-    /**
-     * Create an instance of {@link GetForecastByCityCode }
-     * 
-     */
-    public GetForecastByCityCode createGetForecastByCityCode() {
-        return new GetForecastByCityCode();
+    public GetLiveWeatherByStationID createGetLiveWeatherByStationID() {
+        return new GetLiveWeatherByStationID();
     }
 
     /**
@@ -358,11 +222,147 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetLocationList }
+     * Create an instance of {@link ApiStationData }
      * 
      */
-    public GetLocationList createGetLocationList() {
-        return new GetLocationList();
+    public ApiStationData createApiStationData() {
+        return new ApiStationData();
+    }
+
+    /**
+     * Create an instance of {@link GetUSWorldCityByLatLongResponse }
+     * 
+     */
+    public GetUSWorldCityByLatLongResponse createGetUSWorldCityByLatLongResponse() {
+        return new GetUSWorldCityByLatLongResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetStationListByUSZipCodeResponse }
+     * 
+     */
+    public GetStationListByUSZipCodeResponse createGetStationListByUSZipCodeResponse() {
+        return new GetStationListByUSZipCodeResponse();
+    }
+
+    /**
+     * Create an instance of {@link LiveWeatherData }
+     * 
+     */
+    public LiveWeatherData createLiveWeatherData() {
+        return new LiveWeatherData();
+    }
+
+    /**
+     * Create an instance of {@link GetLiveCompactWeatherByCityCode }
+     * 
+     */
+    public GetLiveCompactWeatherByCityCode createGetLiveCompactWeatherByCityCode() {
+        return new GetLiveCompactWeatherByCityCode();
+    }
+
+    /**
+     * Create an instance of {@link GetForecastByUSZipCode }
+     * 
+     */
+    public GetForecastByUSZipCode createGetForecastByUSZipCode() {
+        return new GetForecastByUSZipCode();
+    }
+
+    /**
+     * Create an instance of {@link GetLiveWeatherByCityCodeResponse }
+     * 
+     */
+    public GetLiveWeatherByCityCodeResponse createGetLiveWeatherByCityCodeResponse() {
+        return new GetLiveWeatherByCityCodeResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetStationListByUSZipCode }
+     * 
+     */
+    public GetStationListByUSZipCode createGetStationListByUSZipCode() {
+        return new GetStationListByUSZipCode();
+    }
+
+    /**
+     * Create an instance of {@link GetAlertsDataListResponse }
+     * 
+     */
+    public GetAlertsDataListResponse createGetAlertsDataListResponse() {
+        return new GetAlertsDataListResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetStationListByCityCode }
+     * 
+     */
+    public GetStationListByCityCode createGetStationListByCityCode() {
+        return new GetStationListByCityCode();
+    }
+
+    /**
+     * Create an instance of {@link GetLiveWeatherByUSZipCode }
+     * 
+     */
+    public GetLiveWeatherByUSZipCode createGetLiveWeatherByUSZipCode() {
+        return new GetLiveWeatherByUSZipCode();
+    }
+
+    /**
+     * Create an instance of {@link GetLiveCompactWeatherByStationIDResponse }
+     * 
+     */
+    public GetLiveCompactWeatherByStationIDResponse createGetLiveCompactWeatherByStationIDResponse() {
+        return new GetLiveCompactWeatherByStationIDResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetForecastByCityCodeResponse }
+     * 
+     */
+    public GetForecastByCityCodeResponse createGetForecastByCityCodeResponse() {
+        return new GetForecastByCityCodeResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetForecastIssueDetailsByUSZipCode }
+     * 
+     */
+    public GetForecastIssueDetailsByUSZipCode createGetForecastIssueDetailsByUSZipCode() {
+        return new GetForecastIssueDetailsByUSZipCode();
+    }
+
+    /**
+     * Create an instance of {@link ApiAlertIssueData }
+     * 
+     */
+    public ApiAlertIssueData createApiAlertIssueData() {
+        return new ApiAlertIssueData();
+    }
+
+    /**
+     * Create an instance of {@link GetAlertsIssueData }
+     * 
+     */
+    public GetAlertsIssueData createGetAlertsIssueData() {
+        return new GetAlertsIssueData();
+    }
+
+    /**
+     * Create an instance of {@link LocationUSWorldCityData }
+     * 
+     */
+    public LocationUSWorldCityData createLocationUSWorldCityData() {
+        return new LocationUSWorldCityData();
+    }
+
+    /**
+     * Create an instance of {@link ApiLocationData }
+     * 
+     */
+    public ApiLocationData createApiLocationData() {
+        return new ApiLocationData();
     }
 
 }

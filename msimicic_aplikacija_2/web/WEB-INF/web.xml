@@ -25,16 +25,16 @@
         <servlet-name>MeteoPodaci</servlet-name>
         <url-pattern>/MeteoPodaci</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>WebServis</servlet-name>
-        <url-pattern>/WebServis</url-pattern>
-    </servlet-mapping>
     <jsp-config>
         <taglib>
             <taglib-uri>/spring</taglib-uri>
             <taglib-location>/WEB-INF/spring.tld</taglib-location>
         </taglib>
     </jsp-config>
+    <servlet-mapping>
+        <servlet-name>WebServis</servlet-name>
+        <url-pattern>/WebServis</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

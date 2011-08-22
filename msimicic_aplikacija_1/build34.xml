@@ -130,7 +130,7 @@
 					PRIMARY KEY (obradjena_poruka_id)
 				);
 				
-				CREATE TABLE poslane_poruke (
+				CREATE TABLE poslane_poruke(
 					poslana_poruka_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
 					primatelj varchar(255),
 					posiljatelj varchar(255) NOT NULL,

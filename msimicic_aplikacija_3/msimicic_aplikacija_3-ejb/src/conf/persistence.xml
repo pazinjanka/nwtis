@@ -3,6 +3,7 @@
   <persistence-unit name="msimicic_aplikacija_3-ejbPU" transaction-type="JTA">
     <jta-data-source>nwtis_msimicic_bp_2</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+    </properties>
   </persistence-unit>
 </persistence>

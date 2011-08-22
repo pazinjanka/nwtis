@@ -8,9 +8,9 @@
     <h:body>
         <h2>#{i18n.zahtjev_za_kor_podacima}:</h2>
         <h:form>
-            #{i18n.kor_ime}: <h:inputText id="kor_ime" value="#{Login.kor_ime}"/><br/>
-            #{i18n.lozinka}: <h:inputSecret id="lozinka" value="#{Login.lozinka}"/><br/>
-            <h:commandButton value="Login" action="#{Login.prijava()}"/>
+            #{i18n.kor_ime}: <h:inputText id="kor_ime" value="#{login.kor_ime}"/><br/>
+            #{i18n.lozinka}: <h:inputSecret id="lozinka" value="#{login.lozinka}"/><br/>
+            <h:commandButton value="Login" action="#{login.prijava()}"/>
         </h:form>
     </h:body>
 </html>

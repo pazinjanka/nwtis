@@ -6,6 +6,7 @@ package org.foi.nwtis.msimicic.sB;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -21,7 +22,10 @@ public abstract class AbstractFacade<T> {
     protected abstract EntityManager getEntityManager();
 
     public void create(T entity) {
-        getEntityManager().persist(entity);
+        EntityManager em = getEntityManager();
+        em.joinTransaction();
+        em.persist(entity);
+        em.flush();        
     }
 
     public void edit(T entity) {

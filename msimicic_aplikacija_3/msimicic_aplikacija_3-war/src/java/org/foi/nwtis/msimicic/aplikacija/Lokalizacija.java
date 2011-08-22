@@ -4,22 +4,22 @@
  */
 package org.foi.nwtis.msimicic.aplikacija;
 
+import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+
 /**
  *
  * @author Martina
  */
 @ManagedBean
 @SessionScoped
-public class Lokalizacija implements Serializable{
+public class Lokalizacija implements Serializable {
 
     private static Map<String, String> jezici;
     private String odabraniJezik = "hr";

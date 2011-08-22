@@ -4,10 +4,9 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
-        
     <context-param>
         <param-name>interval</param-name>
-        <param-value>50</param-value>
+        <param-value>100</param-value>
     </context-param>
     <context-param>
         <param-name>smtp</param-name>
@@ -25,23 +24,22 @@
         <param-name>mailPass</param-name>
         <param-value>msimicic</param-value>
     </context-param>
-    
     <!-- JSF mapping -->
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <!-- Map these files with JSF -->
     <servlet>
         <servlet-name>Mail</servlet-name>
-        <servlet-class>org.foi.nwtis.msimicic.aplikacija.Mail</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <servlet-class>org.foi.nwtis.msimicic.posta.Mail</servlet-class>
+        <load-on-startup>2</load-on-startup>
     </servlet>
-    <servlet>
-        <servlet-name>DBkonfoguracija</servlet-name>
-        <servlet-class>org.foi.nwtis.msimicic.konfiguracija.DBkonfiguracija</servlet-class>
-    </servlet>
-    <!-- Map these files with JSF -->
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -58,19 +56,6 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Mail</servlet-name>
-        <url-pattern>/Mail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DBkonfoguracija</servlet-name>
-        <url-pattern>/DBkonfoguracija</url-pattern>
-    </servlet-mapping>
-    <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
-    </session-config>
     <welcome-file-list>
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
@@ -78,4 +63,13 @@
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
         <location>/error.xhtml</location>
     </error-page>
+    <servlet-mapping>
+        <servlet-name>Mail</servlet-name>
+        <url-pattern>/Mail</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
 </web-app>
