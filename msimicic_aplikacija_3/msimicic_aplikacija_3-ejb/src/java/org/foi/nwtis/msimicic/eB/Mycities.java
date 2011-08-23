@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.foi.nwtis.msimicic.eB;
 
 import java.io.Serializable;
@@ -12,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -21,7 +20,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "MYCITIES")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Mycities.findAll", query = "SELECT m FROM Mycities m"),
     @NamedQuery(name = "Mycities.findByZip", query = "SELECT m FROM Mycities m WHERE m.zip = :zip")})
@@ -29,7 +27,6 @@ public class Mycities implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ZIP")
     private Integer zip;
 
@@ -70,7 +67,7 @@ public class Mycities implements Serializable {
 
     @Override
     public String toString() {
-        return "org.foi.nwtis.msimicic.eB.Mycities[ zip=" + zip + " ]";
+        return "org.foi.nwtis.msimicic.eB.Mycities[zip=" + zip + "]";
     }
-    
+
 }

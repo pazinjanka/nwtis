@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.foi.nwtis.msimicic.eB;
 
 import java.io.Serializable;
@@ -15,10 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,7 +23,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "STATES")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "States.findAll", query = "SELECT s FROM States s"),
     @NamedQuery(name = "States.findByState", query = "SELECT s FROM States s WHERE s.state = :state"),
@@ -35,13 +31,9 @@ public class States implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2)
     @Column(name = "STATE")
     private String state;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "NAME")
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "states")
@@ -75,7 +67,6 @@ public class States implements Serializable {
         this.name = name;
     }
 
-    @XmlTransient
     public Collection<Counties> getCountiesCollection() {
         return countiesCollection;
     }
@@ -106,7 +97,7 @@ public class States implements Serializable {
 
     @Override
     public String toString() {
-        return "org.foi.nwtis.msimicic.eB.States[ state=" + state + " ]";
+        return "org.foi.nwtis.msimicic.eB.States[state=" + state + "]";
     }
-    
+
 }

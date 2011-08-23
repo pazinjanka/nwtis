@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.foi.nwtis.msimicic.eB;
 
 import java.io.Serializable;
@@ -18,10 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,7 +26,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "KORISNICI")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Korisnici.findAll", query = "SELECT k FROM Korisnici k"),
     @NamedQuery(name = "Korisnici.findByKorIme", query = "SELECT k FROM Korisnici k WHERE k.korIme = :korIme"),
@@ -44,32 +40,21 @@ public class Korisnici implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
     @Column(name = "KOR_IME")
     private String korIme;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
     @Column(name = "IME")
     private String ime;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
     @Column(name = "PREZIME")
     private String prezime;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "LOZINKA")
     private String lozinka;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
     @Column(name = "EMAIL_ADRESA")
     private String emailAdresa;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "VRSTA")
     private int vrsta;
     @Column(name = "DATUM_KREIRANJA")
@@ -78,7 +63,7 @@ public class Korisnici implements Serializable {
     @Column(name = "DATUM_PROMJENE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datumPromjene;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "korIme")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "korisnici")
     private Collection<Putovanja> putovanjaCollection;
 
     public Korisnici() {
@@ -161,7 +146,6 @@ public class Korisnici implements Serializable {
         this.datumPromjene = datumPromjene;
     }
 
-    @XmlTransient
     public Collection<Putovanja> getPutovanjaCollection() {
         return putovanjaCollection;
     }
@@ -192,7 +176,7 @@ public class Korisnici implements Serializable {
 
     @Override
     public String toString() {
-        return "org.foi.nwtis.msimicic.eB.Korisnici[ korIme=" + korIme + " ]";
+        return "org.foi.nwtis.msimicic.eB.Korisnici[korIme=" + korIme + "]";
     }
-    
+
 }

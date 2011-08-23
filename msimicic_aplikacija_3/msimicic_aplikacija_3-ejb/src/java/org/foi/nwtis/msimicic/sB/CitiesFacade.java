@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.foi.nwtis.msimicic.sB;
 
 import javax.ejb.Stateless;
@@ -14,7 +15,7 @@ import org.foi.nwtis.msimicic.eB.Cities;
  * @author Martina
  */
 @Stateless
-public class CitiesFacade extends AbstractFacade<Cities> {
+public class CitiesFacade extends AbstractFacade<Cities> implements CitiesFacadeLocal, CitiesFacadeRemote {
     @PersistenceContext(unitName = "msimicic_aplikacija_3-ejbPU")
     private EntityManager em;
 
@@ -25,5 +26,5 @@ public class CitiesFacade extends AbstractFacade<Cities> {
     public CitiesFacade() {
         super(Cities.class);
     }
-    
+
 }

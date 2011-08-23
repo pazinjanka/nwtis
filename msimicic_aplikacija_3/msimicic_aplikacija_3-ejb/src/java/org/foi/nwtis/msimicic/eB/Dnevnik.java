@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.foi.nwtis.msimicic.eB;
 
 import java.io.Serializable;
@@ -17,8 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -26,7 +25,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "DNEVNIK")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Dnevnik.findAll", query = "SELECT d FROM Dnevnik d"),
     @NamedQuery(name = "Dnevnik.findByDnevnikId", query = "SELECT d FROM Dnevnik d WHERE d.dnevnikId = :dnevnikId"),
@@ -40,29 +38,23 @@ public class Dnevnik implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "DNEVNIK_ID")
     private Integer dnevnikId;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "DATUMOD")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datumod;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "DATUMDO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datumdo;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "BROJPROCITANIH")
     private int brojprocitanih;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "BROJNWTIS")
     private int brojnwtis;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "BROJISPRAVNIH")
     private int brojispravnih;
 
@@ -152,7 +144,7 @@ public class Dnevnik implements Serializable {
 
     @Override
     public String toString() {
-        return "org.foi.nwtis.msimicic.eB.Dnevnik[ dnevnikId=" + dnevnikId + " ]";
+        return "org.foi.nwtis.msimicic.eB.Dnevnik[dnevnikId=" + dnevnikId + "]";
     }
-    
+
 }

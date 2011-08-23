@@ -2,14 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.foi.nwtis.msimicic.eB;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -18,13 +17,9 @@ import javax.validation.constraints.Size;
 @Embeddable
 public class CountiesPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2)
     @Column(name = "STATE")
     private String state;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
     @Column(name = "COUNTY")
     private String county;
 
@@ -78,7 +73,7 @@ public class CountiesPK implements Serializable {
 
     @Override
     public String toString() {
-        return "org.foi.nwtis.msimicic.eB.CountiesPK[ state=" + state + ", county=" + county + " ]";
+        return "org.foi.nwtis.msimicic.eB.CountiesPK[state=" + state + ", county=" + county + "]";
     }
-    
+
 }

@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.foi.nwtis.msimicic.aplikacija;
 
 import javax.enterprise.context.SessionScoped;
@@ -21,7 +22,7 @@ import javax.faces.event.ValueChangeEvent;
 @SessionScoped
 public class Lokalizacija implements Serializable {
 
-    private static Map<String, String> jezici;
+   private static Map<String, String> jezici;
     private String odabraniJezik = "hr";
 
     /** Creates a new instance of Lokalizacija */
@@ -42,15 +43,16 @@ public class Lokalizacija implements Serializable {
     public void setOdabraniJezik(String odabraniJezik) {
         this.odabraniJezik = odabraniJezik;
     }
-    
+
     public void promjena(ValueChangeEvent e) {
         this.odabraniJezik = e.getNewValue().toString();
     }
-    
+
     public Object postaviLocalizaciju() {
         FacesContext context = FacesContext.getCurrentInstance();
         Object noviLocale = this.getOdabraniJezik();
         context.getApplication().setDefaultLocale(new Locale((String) noviLocale));
         return "LOGIN";
     }
+
 }

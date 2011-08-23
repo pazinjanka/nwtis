@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.foi.nwtis.msimicic.eB;
 
 import java.io.Serializable;
@@ -15,9 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,7 +23,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "ZIP_CODES")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ZipCodes.findAll", query = "SELECT z FROM ZipCodes z"),
     @NamedQuery(name = "ZipCodes.findByZip", query = "SELECT z FROM ZipCodes z WHERE z.zip = :zip"),
@@ -36,20 +33,15 @@ public class ZipCodes implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ZIP")
     private Integer zip;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "LATITUDE")
     private double latitude;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "LONGITUDE")
     private double longitude;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "ZIP_CLASS")
     private String zipClass;
     @JoinColumns({
@@ -135,7 +127,7 @@ public class ZipCodes implements Serializable {
 
     @Override
     public String toString() {
-        return "org.foi.nwtis.msimicic.eB.ZipCodes[ zip=" + zip + " ]";
+        return "org.foi.nwtis.msimicic.eB.ZipCodes[zip=" + zip + "]";
     }
-    
+
 }

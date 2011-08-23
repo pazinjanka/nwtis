@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>#{i18n.aplikacija_title}</title>
+    </h:head>
+    <h:body>
+        #{i18n.application_welcome_text}
+        #{i18n.odaberi_jezik}
+        <h:form>
+            <h:selectOneRadio id="jezik" value="#{lokalizacija.odabraniJezik}" onchange="submit()" valueChangeListener="#{lokalizacija.promjena}">
+                <f:selectItems value="#{lokalizacija.jezici}"/>
+            </h:selectOneRadio><br/>
+            <h:commandButton value="Postavi jezik" action="#{lokalizacija.postaviLocalizaciju()}" />
+        </h:form>
+    </h:body>
+</html>
+
