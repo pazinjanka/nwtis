@@ -6,11 +6,11 @@
     </context-param>
     <context-param>
         <param-name>interval</param-name>
-        <param-value>100</param-value>
+        <param-value>10</param-value>
     </context-param>
     <context-param>
         <param-name>intervalJMS</param-name>
-        <param-value>100</param-value>
+        <param-value>10</param-value>
     </context-param>
     <context-param>
         <param-name>smtp</param-name>
@@ -40,6 +40,10 @@
         <load-on-startup>2</load-on-startup>
     </servlet>
     <!-- Map these files with JSF -->
+    <servlet>
+        <servlet-name>Meteo</servlet-name>
+        <servlet-class>org.foi.nwtis.msimicic.meteo.Meteo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -67,6 +71,15 @@
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
         <location>/error.xhtml</location>
     </error-page>
+    <ejb-ref>
+        <ejb-ref-name>PoslanePorukeFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <remote>org.foi.nwtis.msimicic.sB.PoslanePorukeFacadeRemote</remote>
+    </ejb-ref>
+    <servlet-mapping>
+        <servlet-name>Meteo</servlet-name>
+        <url-pattern>/Meteo</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

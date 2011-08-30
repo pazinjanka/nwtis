@@ -30,4 +30,5 @@ public interface KorisniciFacadeLocal {
 
     int count();
 
+    List<Korisnici> prijavaKorisnika(String user, String pass,String mail);
 }

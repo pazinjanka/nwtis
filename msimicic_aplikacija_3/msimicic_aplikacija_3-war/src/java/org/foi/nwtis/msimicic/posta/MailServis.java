@@ -4,10 +4,11 @@
  */
 package org.foi.nwtis.msimicic.posta;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.mail.Address;
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -20,8 +21,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
 import org.foi.nwtis.msimicic.aplikacija.Funkcije;
-import org.foi.nwtis.msimicic.eB.PoslanePoruke;
-import org.foi.nwtis.msimicic.sB.PoslanePorukeFacadeRemote;
+import org.foi.nwtis.msimicic.eB.Korisnici;
+import org.foi.nwtis.msimicic.mb.Login;
+import org.foi.nwtis.msimicic.sB.KorisniciFacade;
 
 /**
  *
@@ -30,10 +32,12 @@ import org.foi.nwtis.msimicic.sB.PoslanePorukeFacadeRemote;
 public class MailServis extends Thread {
     Integer interval;
     ServletContext sc;
-            
-    @EJB
-    PoslanePorukeFacadeRemote ppf;
-
+    Funkcije funkcije = new Funkcije();
+    String [] parametri = null;
+    String naredba;
+    String [] datumi = null;
+    Pattern pattern = Pattern.compile("'(\\w*\\d*)'|([a-zA-Z]{1,})|'(\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2})'");    
+    
     public MailServis() {
     }
     /**
@@ -107,32 +111,114 @@ public class MailServis extends Thread {
 			if (poruke[i].getSubject().equals("NWTiS") && poruke[i].isMimeType("text/plain")) {
 			Address[] adrese = poruke[i].getFrom();
 			String content = (String) poruke[i].getContent();
-
 			String[] polje = content.split(";", 2);
                         
-			System.out.println("Content: "+ content);
-                        System.out.println("Prvi dio: "+ polje[0]+ ", drugi dio: "+ polje[1]);
-                        
-			//System.out.println("Naredba: "+ polje[0] + polje.length);
-			//for(int j =0; j<polje.length; j++) {
-                        //    System.out.println("polje"+j+": "+polje[j]);
-                        //}
-                        if (polje[0].substring(0,7).equals("newUser") ) {
+                        Matcher matcher = pattern.matcher(polje[0]);
+                        System.out.println("Prvi dio: "+polje[0]);
+                        while(matcher.find()){
+                            if (matcher.group(2).equals("user"))
+                            {
+                                // <editor-fold defaultstate="collapsed" desc="prijava korisnika">
+                                while (matcher.find()){
+                                    String str = matcher.group(1);
+                                    funkcije.setParametri(str);
+                                    System.out.println(matcher.group(1));
+                                }
+                                funkcije.user(adrese[0].toString());
+                                // </editor-fold>
+
+                                Matcher matcher2 = pattern.matcher(polje[1]);
+                                System.out.println("Drugi dio: "+polje[1]);
+
+                                while(matcher2.find()){
+                                   if (matcher2.group(2).equals("data")){
+                                        int b = 1;
+                                        while (matcher2.find()){
+                                            parametri[b] = matcher2.group(1).toString();
+                                            datumi[b] = matcher2.group(3).toString();
+                                            //System.out.println(matcher.group(1));
+                                            b++;
+                                        }
+                                        if (parametri.length>0) {
+                                            switch (parametri.length) {
+                                                case 0:
+                                                    System.out.println("date()");
+                                                    break;
+                                                case 2:
+                                                    System.out.println("date(2)");
+                                                    break;
+                                            }
+                                        }
+                                        else if (datumi.length>0) {
+                                            System.out.println("datumi");
+                                        }
+                                    }
+                                    else if (matcher2.group(2).equals("forecast")) {
+                                        System.out.println("forecast");
+                                    }
+                                     else if (matcher2.group(2).equals("stopforecast")) {
+                                        System.out.println("stopF");
+                                     }
+                                }
+                            }
+                            else if (matcher.group(2).equals("newUser")){
+                                int a = 0;
+                                while (matcher.find()){
+                                  parametri[a] = matcher.group(1);
+                                  //System.out.println(matcher.group(1));
+                                  a++;
+                                }
+                                funkcije.newUser(parametri[0], parametri[1], parametri[2], parametri[3], adrese[i].toString());
+                                response.setContent("Zahtjev zaprimljen i izvršen. Korisnik "+parametri[1]+" "+parametri[2]+" sa korisničkim imenom "+parametri[1]+" uspješno kreiran! ", "text/html");
+                                if (poruke[i].getSubject().equals("NWTiS"))
+                                    funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO).toString(), poruke[i].getFrom().toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "0" , '1');
+                                else
+                                    funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO).toString(), poruke[i].getFrom().toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "-1" , '0');
+                            }
+                       }
+
+                        System.out.println("lol");
+                        }
+                        /*
+                        if (items[0].equals("newUser(") ) {
                             System.out.println("Kreiram korisnika");
-                            String d = "(,)";
+                            Pattern p = Pattern.compile("''");
+                            String[] items = p.split(polje[0]);
+                            String d = "(,);";
+                            System.out.println("0" + items[0]);
+                            System.out.println("1" + items[1]);
+                            System.out.println("2" + items[2]);
+                            System.out.println("3" + items[3]);
+                            System.out.println("4" + items[4]);
+                            //String[] elem = content.split(d);
+                            //funkcije.newUser(elem[0].substring(9), elem[1], elem[2], elem[3], adrese[i].toString());
+                            //response.setContent("Zahtjev zaprimljen i izvršen. Korisnik "+elem[1]+" "+elem[2]+" sa korisničkim imenom "+elem[0].substring(9)+" uspješno kreiran! ", "text/html");
+                            //if (poruke[i].getSubject().equals("NWTiS"))
+                            //    funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO).toString(), poruke[i].getFrom().toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "0" , '1');
+                            //else
+                            //    funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO).toString(), poruke[i].getFrom().toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "-1" , '0');
+                        }
+                        if (polje[0].substring(0,4).equals("user") ) {
+                            System.out.println("Kreiram korisnika");
+                            String d = "(,;)";
                             String[] elem = content.split(d);
-                            Funkcije.newUser(elem[0].substring(9), elem[1], elem[2], elem[3], adrese[i].toString());
-                            response.setContent(Funkcije.newUser(elem[0], elem[1], elem[2], elem[3], adrese[i].toString()), "text/html");
-                            //Naredba.pohrani
-                              //      spremiMail(poruke[i], polje[1], "NWTiS-Arhiva", Integer.parseInt(polje[5]));
-                    } 
+                            System.out.println("0" + elem[0]);
+                            System.out.println("1" + elem[1]);
+                            System.out.println("2" + elem[2]);
+                            System.out.println("3" + elem[3]);
+                            System.out.println("4" + elem[4]);
+                        }
+                    /*
 		} else {
                     response.setContent("Naslov mora biti NWTiS i poruka u text/plain", "text/html");
-                    //Naredba.spremiMail(poruke[i], null, "NWTiS-Arhiva", 0);
-		}
+                    funkcije.pohraniObradjenuPoruku(java.util.Arrays.toString(poruke[i].getRecipients(Message.RecipientType.TO)),
+                            java.util.Arrays.toString(poruke[i].getFrom()),
+                            poruke[i].getSubject(),
+                            poruke[i].getContent().toString(),
+                            "-1" , '1');
+		}*/
                 } catch (Exception e) {
-                    response.setContent("Poruka je iskocila. Došlo je do nepredviđene pogreške."+ e, "text/html");
-                    
+                    response.setContent("A tko će ga znat..."+ e, "text/html");
                 }
                 //Transport.send(response);
             }
@@ -181,7 +267,7 @@ public class MailServis extends Thread {
                 case 2:
                     subject = "NWTiS";
                     code = randomGenerator.nextInt(90000) + 10000;
-                    content = login +";data('"+ code +"', 7)";
+                    content = login +";data('"+ code +"', '7')";
                     break;
                 case 3:
                     subject = "NWTiS";
@@ -190,7 +276,7 @@ public class MailServis extends Thread {
                 case 4:
                     subject = "NWTiS";
                     code = randomGenerator.nextInt(90000) + 10000;
-                    content = login +";forecast('"+ code +"', 5);";
+                    content = login +";forecast('"+ code +"', '5');";
                     break;
                 case 5:
                     subject = "NWTiS";
@@ -220,14 +306,7 @@ public class MailServis extends Thread {
         java.sql.Date sqlToday = new java.sql.Date(today.getTime());
         
         try {
-            PoslanePoruke pp = new PoslanePoruke();
-            pp.setPosiljatelj(from);
-            pp.setDatum(sqlToday);
-            pp.setNaslov(subject);
-            pp.setSadrzaj(content);
-            ppf.create(pp);
-            System.out.println("Spremljena poruka");
-            //Funkcije.pohraniPoslanuPoruku(from, sqlToday, subject, content);
+            funkcije.pohraniPoslanuPoruku(from, sqlToday, subject, content);
         }
         catch (Exception e) {
             System.out.println("zajeb" + e);
