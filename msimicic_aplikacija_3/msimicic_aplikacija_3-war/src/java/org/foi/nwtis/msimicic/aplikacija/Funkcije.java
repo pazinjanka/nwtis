@@ -33,28 +33,7 @@ public class Funkcije implements Serializable {
     PoslanePorukeFacadeRemote ppfr = getPoslanePorukeFacadeRemote();
     ObradjenePorukeFacadeRemote opfr = getObradjenePorukeFacadeRemote();
 
-    public String [] parametri = new String [5];
-    public int count = 0;
-
     public Funkcije() {
-    }
-
-    public void setParametri (String parametar){
-        this.parametri[count] = parametar;
-        int c = this.getCount();
-        this.setCount(c+1);
-    }
-
-    public String [] getParametri (){
-        return this.parametri;
-    }
-
-    public void setCount (int count){
-        this.count = count;
-    }
-
-    public int getCount (){
-        return this.count;
     }
 
     public String newUser(String kor_ime, String ime, String prezime, String lozinka, String email) {
@@ -69,9 +48,8 @@ public class Funkcije implements Serializable {
         return "Korisnik uspješno keriran.";
     }
 
-        public void user(String email) {
-            String [] param = this.getParametri();
-            List<Korisnici> prijava = kfr.prijavaKorisnika(param[0], param[0], email);
+        public void user(String [] parametri) {
+            List<Korisnici> prijava = kfr.prijavaKorisnika(parametri[0], parametri[1], "pero@foi.hr");
             if (prijava.size() != 1) {
                 //sendMail(messages[i].getFrom()[0].toString(), from, "NWTiS greska", "Neuspjesna prijava", session);
                                     //messages[i].setFlag(Flag.DELETED, true);
@@ -117,6 +95,9 @@ public class Funkcije implements Serializable {
         }
     }
 
+    public void data() {
+
+    }
 
     //instanciranje Facada Remote
     // <editor-fold defaultstate="collapsed" desc="instanciranje Facada Remote">
@@ -158,5 +139,6 @@ public class Funkcije implements Serializable {
             throw new RuntimeException(ne);
         }
     }
+    
     // </editor-fold>
 }

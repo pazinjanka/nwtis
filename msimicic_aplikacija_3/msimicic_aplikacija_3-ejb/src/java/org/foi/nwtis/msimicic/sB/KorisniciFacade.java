@@ -31,10 +31,10 @@ public class KorisniciFacade extends AbstractFacade<Korisnici> implements Korisn
 
     @Override
     public List<Korisnici> prijavaKorisnika(String korIme, String lozinka, String email) {
-        return em.createQuery( "SELECT * FROM  Korisnici WHERE k.kor_ime = :KOR_IME and p.lozinka = :LOZINKA and p.email_adresa = :MAIL" )
+        return em.createQuery( "SELECT k FROM  Korisnici k WHERE k.korIme = :KOR_IME and k.lozinka = :LOZINKA and k.emailAdresa = :MAIL" )
         .setParameter("KOR_IME", korIme)
         .setParameter("LOZINKA", lozinka)
-        .setParameter("EMAIL_ADRESA", email)
+        .setParameter("MAIL", email)
         .getResultList();
     }
 }

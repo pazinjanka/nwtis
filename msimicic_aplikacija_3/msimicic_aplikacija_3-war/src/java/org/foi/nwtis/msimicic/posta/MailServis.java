@@ -33,9 +33,8 @@ public class MailServis extends Thread {
     Integer interval;
     ServletContext sc;
     Funkcije funkcije = new Funkcije();
-    String [] parametri = null;
-    String naredba;
-    String [] datumi = null;
+    String [] parametri = new String[5];
+    String [] datumi = new String[5];
     Pattern pattern = Pattern.compile("'(\\w*\\d*)'|([a-zA-Z]{1,})|'(\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2})'");    
     
     public MailServis() {
@@ -119,12 +118,15 @@ public class MailServis extends Thread {
                             if (matcher.group(2).equals("user"))
                             {
                                 // <editor-fold defaultstate="collapsed" desc="prijava korisnika">
+                                int a = 0;
                                 while (matcher.find()){
                                     String str = matcher.group(1);
-                                    funkcije.setParametri(str);
+                                    parametri[a] = str;
+                                    a++;
                                     System.out.println(matcher.group(1));
                                 }
-                                funkcije.user(adrese[0].toString());
+                                parametri[a] = adrese[0].toString();
+                                funkcije.user(parametri);
                                 // </editor-fold>
 
                                 Matcher matcher2 = pattern.matcher(polje[1]);
@@ -132,16 +134,17 @@ public class MailServis extends Thread {
 
                                 while(matcher2.find()){
                                    if (matcher2.group(2).equals("data")){
-                                        int b = 1;
-                                        while (matcher2.find()){
-                                            parametri[b] = matcher2.group(1).toString();
-                                            datumi[b] = matcher2.group(3).toString();
-                                            //System.out.println(matcher.group(1));
-                                            b++;
-                                        }
+                                       int b = 1;
+                                       while (matcher2.find()){
+                                       parametri[b] = matcher2.group(1).toString();
+                                       datumi[b] = matcher2.group(3).toString();
+                                       //System.out.println(matcher.group(1));
+                                       b++;
+                                       }
                                         if (parametri.length>0) {
                                             switch (parametri.length) {
                                                 case 0:
+                                                    funkcije.data();
                                                     System.out.println("date()");
                                                     break;
                                                 case 2:
@@ -171,13 +174,11 @@ public class MailServis extends Thread {
                                 funkcije.newUser(parametri[0], parametri[1], parametri[2], parametri[3], adrese[i].toString());
                                 response.setContent("Zahtjev zaprimljen i izvršen. Korisnik "+parametri[1]+" "+parametri[2]+" sa korisničkim imenom "+parametri[1]+" uspješno kreiran! ", "text/html");
                                 if (poruke[i].getSubject().equals("NWTiS"))
-                                    funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO).toString(), poruke[i].getFrom().toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "0" , '1');
+                                    funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(), poruke[i].getFrom()[0].toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "0" , '1');
                                 else
-                                    funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO).toString(), poruke[i].getFrom().toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "-1" , '0');
+                                    funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(), poruke[i].getFrom()[0].toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "-1" , '0');
                             }
-                       }
-
-                        System.out.println("lol");
+                        }
                         }
                         /*
                         if (items[0].equals("newUser(") ) {
