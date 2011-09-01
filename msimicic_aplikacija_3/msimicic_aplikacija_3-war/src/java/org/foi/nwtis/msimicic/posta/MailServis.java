@@ -33,6 +33,7 @@ public class MailServis extends Thread {
     String [] datumi = new String[5];
     Pattern pattern = Pattern.compile("'(\\w*\\d*)'|([a-zA-Z]{1,})");
     Pattern datumPattern = Pattern.compile("'(\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2})'");
+    Pattern responsePattern = Pattern.compile("Re:");
     String prijavljen;
     
     public MailServis() {
@@ -247,7 +248,7 @@ public class MailServis extends Thread {
                             // </editor-fold>
                         }
                         nwtis++;
-		} else {
+		} else if (!poruke[i].getSubject().substring(0, 3).equals("Re:")) {
                     response.setContent("Naslov mora biti NWTiS i poruka u text/plain", "text/html");
                     funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(),
                             poruke[i].getFrom()[0].toString(),
