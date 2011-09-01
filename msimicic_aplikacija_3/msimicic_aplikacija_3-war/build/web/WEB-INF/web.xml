@@ -28,7 +28,18 @@
         <param-name>mailPass</param-name>
         <param-value>nwtis</param-value>
     </context-param>
-    <!-- JSF mapping -->
+    <filter>
+        <filter-name>Autorizacija</filter-name>
+        <filter-class>org.foi.nwtis.msimicic.filtri.Autorizacija</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Autorizacija</filter-name>
+        <url-pattern>/faces/aplikacija/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

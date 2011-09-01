@@ -30,4 +30,6 @@ public interface PutovanjaFacadeLocal {
 
     int count();
 
+    public List<Putovanja> dohvatiGradoveZaKorisnika(String korisnik);
+
 }

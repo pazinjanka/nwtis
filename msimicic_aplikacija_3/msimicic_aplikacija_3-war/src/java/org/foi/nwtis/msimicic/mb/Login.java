@@ -6,11 +6,15 @@
 package org.foi.nwtis.msimicic.mb;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import org.foi.nwtis.msimicic.eB.Korisnici;
 import org.foi.nwtis.msimicic.sB.KorisniciFacadeLocal;
 
 /**
@@ -26,6 +30,8 @@ public class Login implements Serializable {
     private String kor_ime = null;
     private String lozinka = null;
 
+    private List<Korisnici> aktivniKorisnici = new ArrayList<Korisnici>();
+    
     /** Creates a new instance of Login */
     public Login() {
     }
@@ -53,6 +59,9 @@ public class Login implements Serializable {
             if (korisnikFacade.find(kor_ime) != null && korisnikFacade.find(kor_ime).getLozinka().compareTo(lozinka) == 0) {
                 request.getSession().setAttribute("korisnik", kor_ime);
                 System.out.println("Korisnik prijavljen!");
+                FacesContext context = FacesContext.getCurrentInstance();
+                ServletContext sc = (ServletContext) context.getExternalContext().getContext();
+                aktivniKorisnici = (List<Korisnici>) sc.getAttribute("aktivniKorisnici");
                 result = "DA";
             }
             return result;

@@ -30,4 +30,5 @@ public interface PutovanjaFacadeRemote {
 
     int count();
 
+    public List<Putovanja> dohvatiGradoveZaKorisnika(String korisnik);
 }

@@ -5,9 +5,11 @@
 
 package org.foi.nwtis.msimicic.sB;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.foi.nwtis.msimicic.eB.Korisnici;
 import org.foi.nwtis.msimicic.eB.Putovanja;
 
 /**
@@ -25,6 +27,14 @@ public class PutovanjaFacade extends AbstractFacade<Putovanja> implements Putova
 
     public PutovanjaFacade() {
         super(Putovanja.class);
+    }
+
+    @Override
+    public List<Putovanja> dohvatiGradoveZaKorisnika(String korisnik) {
+        Korisnici k = (Korisnici) em.createQuery("SELECT k FROM Korisnici k WHERE k.korIme = :KOR_IME").setParameter("KOR_IME", korisnik).getSingleResult();
+        return em.createQuery( "SELECT p FROM  Putovanja p WHERE p.korisnici = :KORISNIK" )
+        .setParameter("KORISNIK", k)
+        .getResultList();
     }
 
 }

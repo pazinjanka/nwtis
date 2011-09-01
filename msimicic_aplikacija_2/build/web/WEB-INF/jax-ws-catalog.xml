@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <nextCatalog catalog="nbproject/private/retriever/catalog.xml"/>
+    <system systemId="http://api.wxbug.net/webservice-v1.asmx?op=GetLiveWeatherByUSZipCode" uri="wsdl/api.wxbug.net/webservice-v1.asmx.op_getliveweatherbyuszipcode"/>
+    <system systemId="http://api.wxbug.net/webservice-v1.asmx?WSDL" uri="wsdl/api.wxbug.net/webservice-v1.asmx.wsdl"/>
+    <system systemId="http://api.wxbug.net/weatherservice.asmx?WSDL" uri="wsdl/api.wxbug.net/weatherservice.asmx.wsdl"/>
+</catalog>

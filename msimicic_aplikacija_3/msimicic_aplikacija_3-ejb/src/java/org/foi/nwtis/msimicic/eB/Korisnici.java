@@ -64,7 +64,7 @@ public class Korisnici implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date datumPromjene;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "korisnici")
-    private Collection<Putovanja> putovanjaCollection;
+    private Collection<Zahtjevi> zahtjeviCollection;
 
     public Korisnici() {
     }
@@ -146,12 +146,12 @@ public class Korisnici implements Serializable {
         this.datumPromjene = datumPromjene;
     }
 
-    public Collection<Putovanja> getPutovanjaCollection() {
-        return putovanjaCollection;
+    public Collection<Zahtjevi> getZahtjeviCollection() {
+        return zahtjeviCollection;
     }
 
-    public void setPutovanjaCollection(Collection<Putovanja> putovanjaCollection) {
-        this.putovanjaCollection = putovanjaCollection;
+    public void setZahtjeviCollection(Collection<Zahtjevi> zahtjeviCollection) {
+        this.zahtjeviCollection = zahtjeviCollection;
     }
 
     @Override
