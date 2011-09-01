@@ -6,6 +6,7 @@
 package org.foi.nwtis.msimicic.meteo;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
@@ -61,9 +62,35 @@ public class MeteoServis extends Thread {
     private void pregledaj() {
         interval = Integer.parseInt(sc.getInitParameter("intervalJMS"));
         Poruka p = new Poruka();
+        String msgText;
+        Zahtjevi zahtjev;
+        // <editor-fold defaultstate="collapsed" desc="weatherBug">
+        String APICODE = "A6458871574";
+        WeatherBugWebServices service = new WeatherBugWebServices();
+        WeatherBugWebServicesSoap port = service.getWeatherBugWebServicesSoap();
+        LiveWeatherData podaci;
+        // </editor-fold>
         // <editor-fold defaultstate="collapsed" desc="zahtjevi za data(parametri);">
         List <Zahtjevi> zahtjeviDP = zfr.getZahtjeviDataParametri();
-        System.out.println("Podaci datum(parametri) dohvaćeni");
+        if (zahtjeviDP != null) {
+            msgText = "Postovani,\n vasa pretplata na meteoroloske podatke \n";
+            Iterator iterator = zahtjeviDP.iterator();
+            while (iterator.hasNext()) {
+                zahtjev = (Zahtjevi) iterator.next();
+                podaci = port.getLiveWeatherByCityCode(Integer.toString(zahtjev.getGradCode()), UnitType.METRIC, APICODE);
+                msgText = msgText + "Grad: "+ podaci.getCity()
+                        +", temperatura: "+ podaci.getTemperature()
+                        +", vlaznost zraka: "+podaci.getHumidity()
+                        +", tlak zraka: "+podaci.getPressure()
+                        +", brzina vjetra: "+podaci.getWindSpeed()
+                        +", za dan: "+podaci.getObDateTime().toString()+"\n\n";
+                this.kraj(zahtjev);
+            }
+            msgText = msgText + "JMS servis...";
+            p.setSadrzaj(msgText);
+            p.setNaslov("Meteoroloski podaci, kategorija 3");
+            System.out.println("Podaci datum(parametri) dohvaćeni");
+        }
         // </editor-fold>
         // <editor-fold defaultstate="collapsed" desc="zahtjevi za data(datumi);">
         //List <Zahtjevi> zahtjeviDD = zfr.getZahtjeviDataDatumi();
@@ -132,5 +159,13 @@ public class MeteoServis extends Thread {
            System.out.println("Greška kod ZahtjeviFacadeRemote" + ne);
             throw new RuntimeException(ne);
         }
+    }
+
+    private void kraj(Zahtjevi zahtjev) {
+        Integer putaPoslano = zahtjev.getPutaPoslano();
+        Integer brojDana = zahtjev.getBrojDana();
+        zahtjev.setBrojDana(brojDana++);
+        if (putaPoslano == brojDana) zahtjev.setZavrseno("1");
+        zfr.edit(zahtjev);
     }
 }
