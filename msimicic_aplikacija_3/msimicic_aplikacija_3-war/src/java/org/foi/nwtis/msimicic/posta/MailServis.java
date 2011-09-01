@@ -79,6 +79,9 @@ public class MailServis extends Thread {
             Session session;
             Store store;
             Folder folder;
+
+            int nwtis = 0;
+            int krive = 0;
             
             String pop3 = sc.getInitParameter("pop3");
             String smtpHost = sc.getInitParameter("smtp");
@@ -92,17 +95,19 @@ public class MailServis extends Thread {
             store = session.getStore("pop3");
             store.connect(pop3, user, pass);
             folder = store.getFolder("INBOX");
+            java.util.Date today1 = new java.util.Date();
+            java.sql.Date datum1 = new java.sql.Date(today1.getTime());
             folder.open(Folder.READ_WRITE);
             // </editor-fold>  
             
-            Integer broj = folder.getMessageCount();                              
+            Integer procitane = folder.getMessageCount();
             Message[] poruke = folder.getMessages();
             Flags f = new Flags();
             
             f.add(Flags.Flag.DELETED);
             folder.setFlags(poruke, f, true);
 
-            System.out.println("Broj poruka je " + broj);
+            System.out.println("Broj poruka je " + procitane);
             if (poruke.length > 0) {
 		for (int i = 0; i < poruke.length; i++) {
                     Message response = poruke[i].reply(false);
@@ -242,6 +247,7 @@ public class MailServis extends Thread {
                             // </editor-fold>
                             // </editor-fold>
                         }
+                        nwtis++;
 		} else {
                     response.setContent("Naslov mora biti NWTiS i poruka u text/plain", "text/html");
                     funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(),
@@ -249,6 +255,7 @@ public class MailServis extends Thread {
                             poruke[i].getSubject(),
                             poruke[i].getContent().toString(),
                             "-1" , '1');
+                    krive++;
                     }
                 } catch (Exception e) {
                     response.setContent("A tko će ga znat..."+ e, "text/html");
@@ -257,6 +264,10 @@ public class MailServis extends Thread {
             }
         }
         folder.close(true);
+        java.util.Date today2 = new java.util.Date();
+        java.sql.Date datum2 = new java.sql.Date(today2.getTime());
+        Integer ispravne = procitane - krive;
+        funkcije.dnevnik(datum1, datum2, procitane, nwtis, ispravne);
         } catch (Exception e) {
             System.out.println(e);
             return;

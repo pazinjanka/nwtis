@@ -17,6 +17,7 @@ import javax.ejb.Stateless;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import org.foi.nwtis.msimicic.eB.Dnevnik;
 import org.foi.nwtis.msimicic.eB.Korisnici;
 import org.foi.nwtis.msimicic.eB.ObradjenePoruke;
 import org.foi.nwtis.msimicic.eB.PoslanePoruke;
@@ -27,6 +28,7 @@ import org.foi.nwtis.msimicic.meteo.LiveWeatherData;
 import org.foi.nwtis.msimicic.meteo.UnitType;
 import org.foi.nwtis.msimicic.meteo.WeatherBugWebServices;
 import org.foi.nwtis.msimicic.meteo.WeatherBugWebServicesSoap;
+import org.foi.nwtis.msimicic.sB.DnevnikFacadeRemote;
 import org.foi.nwtis.msimicic.sB.KorisniciFacadeRemote;
 import org.foi.nwtis.msimicic.sB.ObradjenePorukeFacadeRemote;
 import org.foi.nwtis.msimicic.sB.PoslanePorukeFacadeRemote;
@@ -46,6 +48,7 @@ public class Funkcije implements Serializable {
     ObradjenePorukeFacadeRemote opfr = getObradjenePorukeFacadeRemote();
     PutovanjaFacadeRemote pfr = getPutovanjaFacadeRemote();
     ZahtjeviFacadeRemote zfr = getZahtjeviFacadeRemote();
+    DnevnikFacadeRemote dfr = getDnevnikFacadeRemote();
 
     public Funkcije() {
     }
@@ -240,6 +243,20 @@ public class Funkcije implements Serializable {
         return response;
     }
 
+    public void dnevnik(Date datum1, Date datum2, Integer procitane, int nwtis, Integer ispravne) {
+        try {
+            Dnevnik dnevnik = new Dnevnik();
+            dnevnik.setDatumod(datum1);
+            dnevnik.setDatumdo(datum2);
+            dnevnik.setBrojprocitanih(procitane);
+            dnevnik.setBrojnwtis(nwtis);
+            dnevnik.setBrojispravnih(ispravne);
+            dfr.create(dnevnik);
+        } catch (Exception e) {
+            System.out.println("Neuspješno upisivanje u dnevnik"+e);
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="instanciranje Facada Remote">
     private PoslanePorukeFacadeRemote getPoslanePorukeFacadeRemote() {
     /*
@@ -296,6 +313,16 @@ public class Funkcije implements Serializable {
             return (ZahtjeviFacadeRemote) c.lookup("java:global/msimicic_aplikacija_3/msimicic_aplikacija_3-ejb/ZahtjeviFacade!org.foi.nwtis.msimicic.sB.ZahtjeviFacadeRemote");
         } catch (NamingException ne) {
            System.out.println("Greška kod ZahtjeviFacadeRemote" + ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private DnevnikFacadeRemote getDnevnikFacadeRemote() {
+        try {
+            Context c = new InitialContext();
+            return (DnevnikFacadeRemote) c.lookup("java:global/msimicic_aplikacija_3/msimicic_aplikacija_3-ejb/DnevnikFacade!org.foi.nwtis.msimicic.sB.DnevnikFacadeRemote");
+        } catch (NamingException ne) {
+           System.out.println("Greška kod DnevnikFacadeRemote" + ne);
             throw new RuntimeException(ne);
         }
     }
