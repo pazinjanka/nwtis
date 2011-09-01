@@ -33,7 +33,6 @@ public class MailServis extends Thread {
     String [] datumi = new String[5];
     Pattern pattern = Pattern.compile("'(\\w*\\d*)'|([a-zA-Z]{1,})");
     Pattern datumPattern = Pattern.compile("'(\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2})'");
-    Pattern responsePattern = Pattern.compile("Re:");
     String prijavljen;
     
     public MailServis() {
@@ -110,7 +109,7 @@ public class MailServis extends Thread {
             if (poruke.length > 0) {
 		for (int i = 0; i < poruke.length; i++) {
                     Message response = poruke[i].reply(false);
-                    response.setHeader("Content-Type","text/plain; charset=\"utf-8\"");
+                    response.setHeader("Content-Type", "text/plain; charset=\"utf-8\"");
                     try {
 			if (poruke[i].getSubject().equals("NWTiS") && poruke[i].isMimeType("text/plain")) {
 			Address[] adrese = poruke[i].getFrom();
@@ -158,7 +157,7 @@ public class MailServis extends Thread {
                                        // <editor-fold defaultstate="collapsed" desc="data();">
                                        if (parametri[0] == null && parametri[1] == null && datumi[0] == null && datumi[1] == null) {
                                            parametri[0] = prijavljen;
-                                           response.setContent(funkcije.data(parametri), "text/html");
+                                           response.setContent(funkcije.data(parametri), "text/plain; charset=\"utf-8\"");
                                            funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(), poruke[i].getFrom()[0].toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "2" , '1');
                                            prijavljen = null;
                                            parametri[0] = null;
@@ -169,7 +168,7 @@ public class MailServis extends Thread {
                                        else if(datumi[0] != null && datumi[1] != null) {
                                                 parametri[0] = prijavljen;
                                                 funkcije.dataSaDatumima(datumi, parametri);
-                                                response.setContent("Vaš zahtjev za slanjem podataka je uspješno spremljen. Podaci će biti slani od "+datumi[0]+" do "+datumi[1]+". ", "text/html");
+                                                response.setContent("Vaš zahtjev za slanjem podataka je uspješno spremljen. Podaci će biti slani od "+datumi[0]+" do "+datumi[1]+". ", "text/plain; charset=\"utf-8\"");
                                                 //System.out.println("Sa datumima");
                                                 funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(), poruke[i].getFrom()[0].toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "4" , '1');
                                                 prijavljen = null;
@@ -181,7 +180,7 @@ public class MailServis extends Thread {
                                        // <editor-fold defaultstate="collapsed" desc="data(kod, dana);">
                                        else if(parametri[0] != null && parametri[1] != null) {
                                             parametri[2] = prijavljen;
-                                            response.setContent(funkcije.dataParametri(parametri), "text/html");
+                                            response.setContent(funkcije.dataParametri(parametri), "text/plain; charset=\"utf-8\"");
                                             //System.out.println("date()");
                                             funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(), poruke[i].getFrom()[0].toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "3" , '1');
                                             prijavljen = null;
@@ -201,7 +200,7 @@ public class MailServis extends Thread {
                                         parametri[2] = prijavljen;
                                         System.out.println("forecast");
                                         if (funkcije.forecast(parametri)){
-                                            response.setContent("Pretplata je aktivirana!", "text/html");
+                                            response.setContent("Pretplata je aktivirana!", "text/plain; charset=\"utf-8\"");
                                         }
                                         funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(), poruke[i].getFrom()[0].toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "5" , '1');
                                         prijavljen = null;
@@ -217,7 +216,7 @@ public class MailServis extends Thread {
                                             c++;
                                         }
                                         parametri[1] = prijavljen;
-                                        response.setContent(funkcije.stopForecast(parametri), "text/html");
+                                        response.setContent(funkcije.stopForecast(parametri), "text/plain; charset=\"utf-8\"");
                                         funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(), poruke[i].getFrom()[0].toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "6" , '1');
                                         System.out.println("stopFprecast");
                                         prijavljen = null;
@@ -237,7 +236,7 @@ public class MailServis extends Thread {
                                   a++;
                                 }
                                 funkcije.newUser(parametri[0], parametri[1], parametri[2], parametri[3], adrese[0].toString());
-                                response.setContent("Zahtjev zaprimljen i izvršen. Korisnik "+parametri[1]+" "+parametri[2]+" sa korisničkim imenom "+parametri[1]+" uspješno kreiran! ", "text/html");
+                                response.setContent("Zahtjev zaprimljen i izvršen. Korisnik "+parametri[1]+" "+parametri[2]+" sa korisničkim imenom "+parametri[1]+" uspješno kreiran! ", "text/plain; charset=\"utf-8\"");
                                 funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(), poruke[i].getFrom()[0].toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "0" , '1');
                                 parametri[0] = null;
                                 parametri[1] = null;
@@ -249,7 +248,7 @@ public class MailServis extends Thread {
                         }
                         nwtis++;
 		} else if (!poruke[i].getSubject().substring(0, 3).equals("Re:")) {
-                    response.setContent("Naslov mora biti NWTiS i poruka u text/plain", "text/html");
+                    response.setContent("Naslov mora biti NWTiS i poruka u text/plain", "text/plain; charset=\"utf-8\"");
                     funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(),
                             poruke[i].getFrom()[0].toString(),
                             poruke[i].getSubject(),

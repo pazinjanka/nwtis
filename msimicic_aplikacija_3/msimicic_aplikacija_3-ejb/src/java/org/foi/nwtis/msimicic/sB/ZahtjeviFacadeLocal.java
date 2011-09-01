@@ -32,4 +32,12 @@ public interface ZahtjeviFacadeLocal {
 
     public Zahtjevi findByCityCodeAndUser(Integer cityCode, String korisnik);
 
+    public List<Zahtjevi> getZahtjeviDataParametri();
+/*
+    public List<Zahtjevi> getZahtjeviDataDatumi();
+    
+    public List<Zahtjevi> getZahtjeviForecast();
+ * 
+ */
+
 }

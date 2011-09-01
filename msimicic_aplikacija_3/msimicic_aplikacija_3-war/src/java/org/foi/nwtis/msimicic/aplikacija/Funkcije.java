@@ -190,14 +190,11 @@ public class Funkcije implements Serializable {
                 zahtjev.setKorisnici(korisnik);
                 zahtjev.setPutaPoslano(0);
                 zahtjev.setZavrseno("0");
-                DateFormat formatter ;
-                Date date1;
-                Date date2;
-                formatter = new SimpleDateFormat("yyyy-MM-dd");
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 java.sql.Date dOd = new java.sql.Date(formatter.parse(datumi[0]).getTime());
+                zahtjev.setDatumdo(dOd);
                 java.sql.Date dDo = new java.sql.Date(formatter.parse(datumi[1]).getTime());
                 zahtjev.setDatumdo(dDo);
-                zahtjev.setDatumdo(dOd);
                 zfr.create(zahtjev);
             }
         } catch (Exception e){

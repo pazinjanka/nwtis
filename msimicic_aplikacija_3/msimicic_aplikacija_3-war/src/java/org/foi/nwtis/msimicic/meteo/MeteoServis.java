@@ -6,19 +6,21 @@
 package org.foi.nwtis.msimicic.meteo;
 
 import java.io.Serializable;
-import javax.annotation.Resource;
+import java.util.List;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
-import javax.jms.Queue;
 import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;
+import org.foi.nwtis.msimicic.eB.Zahtjevi;
+import org.foi.nwtis.msimicic.sB.ZahtjeviFacadeRemote;
 
 /**
  *
@@ -27,11 +29,9 @@ import javax.servlet.ServletContext;
 public class MeteoServis extends Thread {
     
     private ServletContext sc;
-    @Resource(mappedName = "jms/aplikacija_3_pool_tvornica")
-    private ConnectionFactory connectionFactory;
-    @Resource(mappedName = "jms/aplikacija_3_tvornica")
-    private Queue queue;
     private int interval;
+
+    ZahtjeviFacadeRemote zfr = getZahtjeviFacadeRemote();
 
     public MeteoServis() {
     }
@@ -53,42 +53,79 @@ public class MeteoServis extends Thread {
         super.interrupt();
     }
 
-    private void posaljiZahtjev(Poruka poruka) throws NamingException, JMSException {
-        Context c = new InitialContext();
-        ConnectionFactory cf = (ConnectionFactory) c.lookup("java:comp/env/jms/msimicic_Tvornica");
-        Destination d = (Destination) c.lookup("java:comp/env/jms/msimicic_RedCekanja");
-
+    private void pregledaj() {
         interval = Integer.parseInt(sc.getInitParameter("intervalJMS"));
-        System.out.println("...početak slanja JMS poruke...");
-        Connection connection = cf.createConnection();
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        MessageProducer messageProducer = session.createProducer(d);
-        ObjectMessage message = session.createObjectMessage();
-        message.setObject((Serializable) poruka);
-        messageProducer.send(message);
-        messageProducer.close();
-        connection.close();
-        System.out.println("...JMS poruka poslana, veza zatvorena...");
+        Poruka p = new Poruka();
+        // <editor-fold defaultstate="collapsed" desc="zahtjevi za data(parametri);">
+        List <Zahtjevi> zahtjeviDP = zfr.getZahtjeviDataParametri();
+        System.out.println("Podaci datum(parametri) dohvaćeni");
+        // </editor-fold>
+        // <editor-fold defaultstate="collapsed" desc="zahtjevi za data(datumi);">
+        //List <Zahtjevi> zahtjeviDD = zfr.getZahtjeviDataDatumi();
+        System.out.println("Podaci datum(datumi) dohvaćeni");
+        // </editor-fold>
+        // <editor-fold defaultstate="collapsed" desc="zahtjevi za forecast();">
+        //List <Zahtjevi> zahtjeviF = zfr.getZahtjeviForecast();
+        System.out.println("Podaci forecast dohvaćeni");
+        // </editor-fold>
+        try {
+            posaljiZahtjev(p);
+        } catch (Exception e) {
+            System.out.println("NEuspješno slanje JMS poruke"+e);
+        }
     }
 
-    private void noviZagtjev() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private Message noviZahtjev(Session session, Object messageData) throws JMSException {
+        ObjectMessage msg = session.createObjectMessage();
+        msg.setObject((Serializable) messageData);
+        return msg;
     }
 
-    public boolean noviZahtjev() {
-        return true;
+    private void posaljiZahtjev(Object messageData) throws NamingException, JMSException {
+        Context c = new InitialContext();
+        ConnectionFactory cf = (ConnectionFactory) c.lookup("java:comp/env/jms/aplikacija_3_pool_tvornica");
+        Connection conn = null;
+        Session s = null;
+        try {
+            conn = cf.createConnection();
+            s = conn.createSession(false, s.AUTO_ACKNOWLEDGE);
+            Destination destination = (Destination) c.lookup("java:comp/env/jms/aplikacija_3_tvornica");
+            MessageProducer mp = s.createProducer(destination);
+            mp.send(noviZahtjev(s, messageData));
+        } finally {
+            if (s != null) {
+                try {
+                    s.close();
+                } catch (JMSException e) {
+                    System.out.println("Nesto po krivom u zatvaranju sesije: "+e);
+                }
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
     }
 
     @Override
     public void run() {
         while (true) {
             try {
-                noviZahtjev();
+                pregledaj();
                 Thread.sleep(interval * 1000);
             } catch (Exception e) {
                 System.out.println(e);
                 return;
             }
+        }
+    }
+
+    private ZahtjeviFacadeRemote getZahtjeviFacadeRemote() {
+        try {
+            Context c = new InitialContext();
+            return (ZahtjeviFacadeRemote) c.lookup("java:global/msimicic_aplikacija_3/msimicic_aplikacija_3-ejb/ZahtjeviFacade!org.foi.nwtis.msimicic.sB.ZahtjeviFacadeRemote");
+        } catch (NamingException ne) {
+           System.out.println("Greška kod ZahtjeviFacadeRemote" + ne);
+            throw new RuntimeException(ne);
         }
     }
 }
