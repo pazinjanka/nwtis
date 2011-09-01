@@ -54,9 +54,9 @@ public class MailServis extends Thread {
     @Override
     public void run() {
 	super.run();
-	while (true) {
+        while (true) {
             try {
-		getData();
+                getData();
                 sendMail();
 		sleep(interval * 1000);
             } catch (Exception e) {
@@ -253,7 +253,7 @@ public class MailServis extends Thread {
                             poruke[i].getFrom()[0].toString(),
                             poruke[i].getSubject(),
                             poruke[i].getContent().toString(),
-                            "-1" , '1');
+                            "-1" , '0');
                     krive++;
                     }
                 } catch (Exception e) {

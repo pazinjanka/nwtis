@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sun-web-app PUBLIC "-//Sun Microsystems, Inc.//DTD GlassFish Application Server 3.0 Servlet 3.0//EN" "http://www.sun.com/software/appserver/dtds/sun-web-app_3_0-0.dtd">
 <sun-web-app error-url="">
-  <context-root>/msimicic_aplikacija_3-war</context-root>
+  <context-root>/msimicic_aplikacija_3-web</context-root>
+  <resource-ref>
+    <res-ref-name>jms/msimicic_Tvornica</res-ref-name>
+    <jndi-name>jms/msimicic_Tvornica</jndi-name>
+  </resource-ref>
+  <message-destination-ref>
+    <message-destination-ref-name>jms/msimicic_RedCekanja</message-destination-ref-name>
+    <jndi-name>jms/msimicic_RedCekanja</jndi-name>
+  </message-destination-ref>
   <class-loader delegate="true"/>
   <jsp-config>
     <property name="keepgenerated" value="true">

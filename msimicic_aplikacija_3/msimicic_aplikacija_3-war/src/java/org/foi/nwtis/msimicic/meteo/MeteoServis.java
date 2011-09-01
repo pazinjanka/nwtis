@@ -7,6 +7,9 @@ package org.foi.nwtis.msimicic.meteo;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -14,6 +17,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
+import javax.jms.Queue;
 import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -30,6 +34,7 @@ public class MeteoServis extends Thread {
     
     private ServletContext sc;
     private int interval;
+
 
     ZahtjeviFacadeRemote zfr = getZahtjeviFacadeRemote();
 
@@ -71,7 +76,7 @@ public class MeteoServis extends Thread {
         try {
             posaljiZahtjev(p);
         } catch (Exception e) {
-            System.out.println("NEuspješno slanje JMS poruke"+e);
+            System.out.println("Neuspješno slanje JMS poruke"+e);
         }
     }
 
@@ -83,13 +88,13 @@ public class MeteoServis extends Thread {
 
     private void posaljiZahtjev(Object messageData) throws NamingException, JMSException {
         Context c = new InitialContext();
-        ConnectionFactory cf = (ConnectionFactory) c.lookup("java:comp/env/jms/aplikacija_3_pool_tvornica");
+        ConnectionFactory cf = (ConnectionFactory) c.lookup("java:comp/env/jms/msimicic_Tvornica");
         Connection conn = null;
         Session s = null;
         try {
             conn = cf.createConnection();
             s = conn.createSession(false, s.AUTO_ACKNOWLEDGE);
-            Destination destination = (Destination) c.lookup("java:comp/env/jms/aplikacija_3_tvornica");
+            Destination destination = (Destination) c.lookup("java:comp/env/jms/msimicic_RedCekanja");
             MessageProducer mp = s.createProducer(destination);
             mp.send(noviZahtjev(s, messageData));
         } finally {
