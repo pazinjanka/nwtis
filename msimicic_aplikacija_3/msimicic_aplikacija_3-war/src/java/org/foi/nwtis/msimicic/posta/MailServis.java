@@ -8,7 +8,6 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.faces.context.FacesContext;
 import javax.mail.Address;
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -20,7 +19,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 import org.foi.nwtis.msimicic.aplikacija.Funkcije;
 
 /**
@@ -148,18 +146,26 @@ public class MailServis extends Thread {
                                        int b = 0;
                                        while (matcher2.find()){
                                             parametri[b] = matcher2.group(1).toString();
+                                            b++;
+                                       }
                                             Matcher matcher3 = datumPattern.matcher(polje[1]);
                                             int c = 0;
                                             while (matcher3.find()){
                                                 datumi[c] = matcher3.group(1).toString();
                                                 c++;
                                             }
-                                            b++;
-                                       }
                                        // <editor-fold defaultstate="collapsed" desc="data();">
-                                       if (parametri[0] == null && parametri[1] == null) {
-                                           // <editor-fold defaultstate="collapsed" desc="data(datum, datum);">
-                                           if (datumi[0] != null && datumi[1] != null) {
+                                       if (parametri[0] == null && parametri[1] == null && datumi[0] == null && datumi[1] == null) {
+                                           parametri[0] = prijavljen;
+                                           response.setContent(funkcije.data(parametri), "text/html");
+                                           funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(), poruke[i].getFrom()[0].toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "2" , '1');
+                                           prijavljen = null;
+                                           parametri[0] = null;
+                                       } 
+                                            // </editor-fold>
+                                       // <editor-fold defaultstate="collapsed" desc="data(datum, datum);">
+
+                                       else if(datumi[0] != null && datumi[1] != null) {
                                                 parametri[0] = prijavljen;
                                                 funkcije.dataSaDatumima(datumi, parametri);
                                                 response.setContent("Vaš zahtjev za slanjem podataka je uspješno spremljen. Podaci će biti slani od "+datumi[0]+" do "+datumi[1]+". ", "text/html");
@@ -170,13 +176,6 @@ public class MailServis extends Thread {
                                                 datumi[0] = null;
                                                 datumi[0] = null;
                                             }
-                                       // </editor-fold>
-                                           parametri[0] = prijavljen;
-                                           response.setContent(funkcije.data(parametri), "text/html");
-                                           funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(), poruke[i].getFrom()[0].toString(), poruke[i].getSubject(), poruke[i].getContent().toString(), "2" , '1');
-                                           prijavljen = null;
-                                           parametri[0] = null;
-                                       }
                                        // </editor-fold>
                                        // <editor-fold defaultstate="collapsed" desc="data(kod, dana);">
                                        else if(parametri[0] != null && parametri[1] != null) {

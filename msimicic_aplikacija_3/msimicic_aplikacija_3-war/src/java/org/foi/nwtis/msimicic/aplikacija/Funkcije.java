@@ -129,7 +129,8 @@ public class Funkcije implements Serializable {
             while (itr.hasNext()) {
                 Putovanja p = (Putovanja) itr.next();
                 podaci = port.getLiveWeatherByCityCode(p.getGradovi(), UnitType.ENGLISH, APICODE);
-                response.concat("Kod grada: "+p.getGradovi()+", grad: "+podaci.getCity()+", temperatura: "+podaci.getTemperature()+", vlažnost zraka: "+podaci.getHumidity()+"\n");
+                String linija = "Kod grada: "+p.getGradovi()+", grad: "+podaci.getCity()+", temperatura: "+podaci.getTemperature()+", vlažnost zraka: "+podaci.getHumidity()+"\n";
+                response = response + linija;
         }
         return response;
         } catch (Exception e){
@@ -148,7 +149,11 @@ public class Funkcije implements Serializable {
             ArrayOfAnyType podaci;
             response = "Vaš zahtjev za meteorološkim podacima uspješno je zaprimljen. Rezultate možete pročitati u nastavku. \n ";
             podaci = port.getForecastByCityCode(parametri[0], UnitType.METRIC, APICODE);
-            response.concat("Kod grada: "+podaci+"\n");
+            Iterator itr = podaci.getAnyType().iterator();
+            response = response + "Kod grada: "+parametri[0]+"\n";
+            while (itr.hasNext()){
+                response = response + " "+ itr.next() +"\n";
+            }
             Zahtjevi zahtjev = new Zahtjevi();
             zahtjev.setBrojDana(Integer.parseInt(parametri[1]));
             zahtjev.setGradCode(Integer.parseInt(parametri[0]));
@@ -183,16 +188,16 @@ public class Funkcije implements Serializable {
                 zahtjev.setDatumZahtjeva(datum);
                 Korisnici korisnik = kfr.find(parametri[0]);
                 zahtjev.setKorisnici(korisnik);
-                zahtjev.setPutaPoslano(1);
+                zahtjev.setPutaPoslano(0);
                 zahtjev.setZavrseno("0");
                 DateFormat formatter ;
                 Date date1;
                 Date date2;
-                formatter = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
-                date1 = (Date)formatter.parse(datumi[0]);
-                zahtjev.setDatumdo(date1);
-                date2 = (Date)formatter.parse(datumi[1]);
-                zahtjev.setDatumdo(date2);
+                formatter = new SimpleDateFormat("yyyy-MM-dd");
+                java.sql.Date dOd = new java.sql.Date(formatter.parse(datumi[0]).getTime());
+                java.sql.Date dDo = new java.sql.Date(formatter.parse(datumi[1]).getTime());
+                zahtjev.setDatumdo(dDo);
+                zahtjev.setDatumdo(dOd);
                 zfr.create(zahtjev);
             }
         } catch (Exception e){
