@@ -6,6 +6,8 @@
 package org.foi.nwtis.msimicic.meteo;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.jms.Connection;
@@ -70,46 +72,71 @@ public class MeteoServis extends Thread {
                 zahtjev = (Zahtjevi) iterator.next();
                 // <editor-fold defaultstate="collapsed" desc="zahtjevi za data() data(parametri);">
                 if (zahtjev.getNaredba().equals("data") || zahtjev.getNaredba().equals("data(parametri")) {
-                    p = new Poruka();
-                    port = service.getWeatherBugWebServicesSoap();
-                    podaci = port.getLiveWeatherByCityCode(Integer.toString(zahtjev.getGradCode()), UnitType.METRIC, APICODE);
-                    msgText = msgText + "Grad: "+ podaci.getCity()
-                                +", temperatura: "+ podaci.getTemperature()
-                                +", vlaznost zraka: "+podaci.getHumidity()
-                                +", tlak zraka: "+podaci.getPressure()
-                                +", brzina vjetra: "+podaci.getWindSpeed()
-                                +", za dan: "+podaci.getObDateTime().toString()+"\n\n";
-                    this.kraj(zahtjev);
-                    p.setKorisnik(zahtjev.getKorisnici());
-                    System.out.println("Prva kategorija");
-                    msgText = msgText + "JMS servis...";
-                    p.setSadrzaj(msgText);
-                    p.setNaslov("Meteoroloski podaci");
+                    if ( this.provjeriDatum(zahtjev.getDatumZahtjeva(), zahtjev.getPutaPoslano())){
+                        p = new Poruka();
+                        port = service.getWeatherBugWebServicesSoap();
+                        podaci = port.getLiveWeatherByCityCode(Integer.toString(zahtjev.getGradCode()), UnitType.METRIC, APICODE);
+                        msgText = msgText + "Grad: "+ podaci.getCity()
+                                    +", temperatura: "+ podaci.getTemperature()
+                                    +", vlaznost zraka: "+podaci.getHumidity()
+                                    +", tlak zraka: "+podaci.getPressure()
+                                    +", brzina vjetra: "+podaci.getWindSpeed()
+                                    +", za dan: "+podaci.getObDateTime().toString()+"\n\n";
+                        this.kraj(zahtjev);
+                        p.setKorisnik(zahtjev.getKorisnici());
+                        System.out.println("Prva kategorija");
+                        msgText = msgText + "JMS servis...";
+                        p.setSadrzaj(msgText);
+                        p.setNaslov("Meteoroloski podaci, slanje podataka");
+                    }
                 }
                 // </editor-fold>
                 // <editor-fold defaultstate="collapsed" desc="zahtjevi za forecast();">
                 else if (zahtjev.getNaredba().equals("forecast")){
-                    port = service.getWeatherBugWebServicesSoap();
-                    ArrayOfAnyType forecast = port.getForecastByCityCode(Integer.toString(zahtjev.getGradCode()), UnitType.METRIC, APICODE);
-                    List<Object> list = forecast.getAnyType();
-                    Iterator itr = list.iterator();
-                    while (itr.hasNext()) {
-                        ApiForecastData ap = (ApiForecastData) itr.next();
-                        msgText = msgText + "Naslov: "+ ap.getTitle()
-                                +", opis: "+ ap.getDescription()
-                                +", temperatura (low): "+ ap.getTempLow()
-                                +", temperatura (high): "+ ap.getTempHigh()
-                                +", prognoza: "+ ap.getPrediction()
-                                +", prognoza (short) "+ ap.getShortPrediction()
-                                +", vise informacija: "+ ap.getWebUrl() +"\n\n";
-                        this.kraj(zahtjev);
-                        p.setKorisnik(zahtjev.getKorisnici());
-                        System.out.println("Forecast kategorija");
+                    if ( this.provjeriDatum(zahtjev.getDatumZahtjeva(), zahtjev.getPutaPoslano())){
+                        p = new Poruka();
+                        port = service.getWeatherBugWebServicesSoap();
+                        ArrayOfAnyType forecast = port.getForecastByCityCode(Integer.toString(zahtjev.getGradCode()), UnitType.METRIC, APICODE);
+                        List<Object> list = forecast.getAnyType();
+                        Iterator itr = list.iterator();
+                        while (itr.hasNext()) {
+                            ApiForecastData ap = (ApiForecastData) itr.next();
+                            msgText = msgText + "Naslov: "+ ap.getTitle()
+                                    +", opis: "+ ap.getDescription()
+                                    +", temperatura (low): "+ ap.getTempLow()
+                                    +", temperatura (high): "+ ap.getTempHigh()
+                                    +", prognoza: "+ ap.getPrediction()
+                                    +", prognoza (short) "+ ap.getShortPrediction()
+                                    +", vise informacija: "+ ap.getWebUrl() +"\n\n";
+                            this.kraj(zahtjev);
+                            p.setKorisnik(zahtjev.getKorisnici());
+                            System.out.println("Prva kategorija");
+                            msgText = msgText + "JMS servis...";
+                            p.setSadrzaj(msgText);
+                            p.setNaslov("Meteoroloski podaci, forecast");
+                        }
                     }
                 }
                 // </editor-fold>
                 else if (zahtjev.getNaredba().equals("data(period)")){
-                    System.out.println("Data(perod) kategorija");
+                    Date datumSlanja = new java.util.Date();
+                    if ( this.provjeriDatum(zahtjev.getDatumZahtjeva(), zahtjev.getPutaPoslano()) && zahtjev.getDatumdo().after(datumSlanja)) {
+                        p = new Poruka();
+                        port = service.getWeatherBugWebServicesSoap();
+                        podaci = port.getLiveWeatherByCityCode(Integer.toString(zahtjev.getGradCode()), UnitType.METRIC, APICODE);
+                        msgText = msgText + "Grad: "+ podaci.getCity()
+                                    +", temperatura: "+ podaci.getTemperature()
+                                    +", vlaznost zraka: "+podaci.getHumidity()
+                                    +", tlak zraka: "+podaci.getPressure()
+                                    +", brzina vjetra: "+podaci.getWindSpeed()
+                                    +", za dan: "+podaci.getObDateTime().toString()+"\n\n";
+                        this.kraj(zahtjev);
+                        p.setKorisnik(zahtjev.getKorisnici());
+                        System.out.println("Data(perod) kategorija");
+                        msgText = msgText + "JMS servis...";
+                        p.setSadrzaj(msgText);
+                        p.setNaslov("Meteoroloski podaci, pretplata na period");
+                    }
                 }
 
                 if (p != null){
@@ -191,7 +218,24 @@ public class MeteoServis extends Thread {
         Integer brojDana = zahtjev.getBrojDana();
         Integer povecaj = putaPoslano + 1;
         zahtjev.setPutaPoslano(povecaj);
-        if (povecaj == brojDana) zahtjev.setZavrseno(1);
+        if (povecaj == brojDana) zahtjev.setZavrseno(Integer.getInteger("1"));
         zfr.edit(zahtjev);
+    }
+
+    private boolean provjeriDatum(Date datumZahtjeva, Integer putaPoslano) {
+        //dobit današnji dan
+        Date datumSlanja = new java.util.Date();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(datumZahtjeva);
+
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(datumSlanja);
+        //na datum zahtjeva dodati koliko je puta poslano
+        cal.add(Calendar.DAY_OF_MONTH, putaPoslano);
+
+        //ako je datum s dodanim putima poslano jednak današnjem danu znači da za danas ne treba slat
+        //suprotno od toga - znači da treba poslat ;)
+        return (!cal.equals(cal1) || !cal1.after(cal));
     }
 }

@@ -6,11 +6,11 @@
     </context-param>
     <context-param>
         <param-name>interval</param-name>
-        <param-value>10</param-value>
+        <param-value>100</param-value>
     </context-param>
     <context-param>
         <param-name>intervalJMS</param-name>
-        <param-value>10</param-value>
+        <param-value>60</param-value>
     </context-param>
     <context-param>
         <param-name>smtp</param-name>
@@ -53,7 +53,7 @@
     <servlet>
         <servlet-name>Mail</servlet-name>
         <servlet-class>org.foi.nwtis.msimicic.posta.Mail</servlet-class>
-        <!-- <load-on-startup>1</load-on-startup> -->
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
@@ -75,6 +75,10 @@
         <servlet-name>Mail</servlet-name>
         <url-pattern>/Mail</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Meteo</servlet-name>
+        <url-pattern>/Meteo</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
@@ -87,10 +91,6 @@
         <ejb-ref-type>Session</ejb-ref-type>
         <remote>org.foi.nwtis.msimicic.sB.PoslanePorukeFacadeRemote</remote>
     </ejb-ref>
-    <servlet-mapping>
-        <servlet-name>Meteo</servlet-name>
-        <url-pattern>/Meteo</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
