@@ -6,6 +6,7 @@
 package org.foi.nwtis.msimicic.meteo;
 
 import java.io.Serializable;
+import org.foi.nwtis.msimicic.eB.Korisnici;
 
 /**
  *
@@ -14,6 +15,7 @@ import java.io.Serializable;
 class Poruka implements Serializable {
     private String naslov;
     private String sadrzaj;
+    private Korisnici korisnik;
 
     public String getNaslov() {
         return naslov;
@@ -30,5 +32,13 @@ class Poruka implements Serializable {
     public void setSadrzaj(String sadrzaj) {
         this.sadrzaj = sadrzaj;
     }
+    public Korisnici getKorisnik() {
+        return korisnik;
+    }
+
+    public void setKorisnik(Korisnici korisnik) {
+        this.korisnik = korisnik;
+    }
+
 
 }

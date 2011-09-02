@@ -164,7 +164,7 @@ public class Funkcije implements Serializable {
             Korisnici korisnik = kfr.find(parametri[2]);
             zahtjev.setKorisnici(korisnik);
             zahtjev.setPutaPoslano(1);
-            zahtjev.setZavrseno("0");
+            zahtjev.setZavrseno(0);
             zfr.create(zahtjev);
             return response;
         } catch (Exception e){
@@ -189,7 +189,7 @@ public class Funkcije implements Serializable {
                 Korisnici korisnik = kfr.find(parametri[0]);
                 zahtjev.setKorisnici(korisnik);
                 zahtjev.setPutaPoslano(0);
-                zahtjev.setZavrseno("0");
+                zahtjev.setZavrseno(0);
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 java.sql.Date dOd = new java.sql.Date(formatter.parse(datumi[0]).getTime());
                 zahtjev.setDatumdo(dOd);
@@ -215,7 +215,7 @@ public class Funkcije implements Serializable {
             Korisnici korisnik = kfr.find(parametri[2]);
             zahtjev.setKorisnici(korisnik);
             zahtjev.setPutaPoslano(0);
-            zahtjev.setZavrseno("0");
+            zahtjev.setZavrseno(0);
             zfr.create(zahtjev);
             return Boolean.TRUE;
         } catch (Exception e){
@@ -229,7 +229,7 @@ public class Funkcije implements Serializable {
         try {
             Zahtjevi zahtjev = zfr.findByCityCodeAndUser(Integer.parseInt(parametri[0]), parametri[1]);
             if (zahtjev != null){
-                zahtjev.setZavrseno("1");
+                zahtjev.setZavrseno(1);
                 zfr.edit(zahtjev);
                 System.out.println("Uspješno zaustavljeno, StopForecast");
                 response = "Pretplata uspješno ukinuta. ";

@@ -8,9 +8,6 @@ package org.foi.nwtis.msimicic.meteo;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -18,7 +15,6 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
-import javax.jms.Queue;
 import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -35,7 +31,7 @@ public class MeteoServis extends Thread {
     
     private ServletContext sc;
     private int interval;
-
+    Poruka p;
 
     ZahtjeviFacadeRemote zfr = getZahtjeviFacadeRemote();
 
@@ -59,9 +55,13 @@ public class MeteoServis extends Thread {
         super.interrupt();
     }
 
+    /**
+     * Pregledava zahtjeve iz baze podataka i salje JMS poruke za one koje treba
+     * Kod slanja poziva posaljiZahtjev metodu koja dohvaća tvornicu i redcekanja
+     */
     private void pregledaj() {
         interval = Integer.parseInt(sc.getInitParameter("intervalJMS"));
-        Poruka p = new Poruka();
+        
         String msgText;
         Zahtjevi zahtjev;
         // <editor-fold defaultstate="collapsed" desc="weatherBug">
@@ -70,40 +70,46 @@ public class MeteoServis extends Thread {
         WeatherBugWebServicesSoap port = service.getWeatherBugWebServicesSoap();
         LiveWeatherData podaci;
         // </editor-fold>
-        // <editor-fold defaultstate="collapsed" desc="zahtjevi za data(parametri);">
-        List <Zahtjevi> zahtjeviDP = zfr.getZahtjeviDataParametri();
+        
+        List <Zahtjevi> zahtjeviDP = zfr.getZahtjeviData();
         if (zahtjeviDP != null) {
             msgText = "Postovani,\n vasa pretplata na meteoroloske podatke \n";
             Iterator iterator = zahtjeviDP.iterator();
+            p = new Poruka();
             while (iterator.hasNext()) {
                 zahtjev = (Zahtjevi) iterator.next();
-                podaci = port.getLiveWeatherByCityCode(Integer.toString(zahtjev.getGradCode()), UnitType.METRIC, APICODE);
-                msgText = msgText + "Grad: "+ podaci.getCity()
-                        +", temperatura: "+ podaci.getTemperature()
-                        +", vlaznost zraka: "+podaci.getHumidity()
-                        +", tlak zraka: "+podaci.getPressure()
-                        +", brzina vjetra: "+podaci.getWindSpeed()
-                        +", za dan: "+podaci.getObDateTime().toString()+"\n\n";
-                this.kraj(zahtjev);
+                // <editor-fold defaultstate="collapsed" desc="zahtjevi za data() data(parametri);">
+                if (zahtjev.getNaredba().equals("data") || zahtjev.getNaredba().equals("data(parametri")) {
+                    podaci = port.getLiveWeatherByCityCode(Integer.toString(zahtjev.getGradCode()), UnitType.METRIC, APICODE);
+                    msgText = msgText + "Grad: "+ podaci.getCity()
+                            +", temperatura: "+ podaci.getTemperature()
+                            +", vlaznost zraka: "+podaci.getHumidity()
+                            +", tlak zraka: "+podaci.getPressure()
+                            +", brzina vjetra: "+podaci.getWindSpeed()
+                            +", za dan: "+podaci.getObDateTime().toString()+"\n\n";
+                    this.kraj(zahtjev);
+                    p.setKorisnik(zahtjev.getKorisnici());
+                    System.out.println("Prva kategorija");
+                }
+                // </editor-fold>
+                // <editor-fold defaultstate="collapsed" desc="zahtjevi za forecast();">
+                else if (zahtjev.getNaredba().equals("forecast")){
+                    System.out.println("Forecast kategorija");
+                }
+                // </editor-fold>
             }
             msgText = msgText + "JMS servis...";
             p.setSadrzaj(msgText);
-            p.setNaslov("Meteoroloski podaci, kategorija 3");
-            System.out.println("Podaci datum(parametri) dohvaćeni");
-        }
-        // </editor-fold>
-        // <editor-fold defaultstate="collapsed" desc="zahtjevi za data(datumi);">
-        //List <Zahtjevi> zahtjeviDD = zfr.getZahtjeviDataDatumi();
-        System.out.println("Podaci datum(datumi) dohvaćeni");
-        // </editor-fold>
-        // <editor-fold defaultstate="collapsed" desc="zahtjevi za forecast();">
-        //List <Zahtjevi> zahtjeviF = zfr.getZahtjeviForecast();
-        System.out.println("Podaci forecast dohvaćeni");
-        // </editor-fold>
-        try {
-            posaljiZahtjev(p);
-        } catch (Exception e) {
-            System.out.println("Neuspješno slanje JMS poruke"+e);
+            p.setNaslov("Meteoroloski podaci");
+            //slanje
+            if (p != null){
+                try {
+                    posaljiZahtjev(p);
+                    System.out.println("Podaci poslani");
+                } catch (Exception e) {
+                    System.out.println("Neuspješno slanje JMS poruke"+e);
+                }
+            }
         }
     }
 
@@ -113,15 +119,22 @@ public class MeteoServis extends Thread {
         return msg;
     }
 
+
+    /**
+     * Posalji zahtjev salje JMS poruku, povezuje i zatvara vezu sa tvornicom i redom čekanja
+     * @param messageData poruka koju je potrebno poslat
+     * @throws NamingException
+     * @throws JMSException
+     */
     private void posaljiZahtjev(Object messageData) throws NamingException, JMSException {
         Context c = new InitialContext();
         ConnectionFactory cf = (ConnectionFactory) c.lookup("java:comp/env/jms/msimicic_Tvornica");
+        Destination destination = (Destination) c.lookup("java:comp/env/jms/msimicic_RedCekanja");
         Connection conn = null;
         Session s = null;
         try {
             conn = cf.createConnection();
             s = conn.createSession(false, s.AUTO_ACKNOWLEDGE);
-            Destination destination = (Destination) c.lookup("java:comp/env/jms/msimicic_RedCekanja");
             MessageProducer mp = s.createProducer(destination);
             mp.send(noviZahtjev(s, messageData));
         } finally {
@@ -140,6 +153,7 @@ public class MeteoServis extends Thread {
 
     @Override
     public void run() {
+        super.run();
         while (true) {
             try {
                 pregledaj();
@@ -164,8 +178,8 @@ public class MeteoServis extends Thread {
     private void kraj(Zahtjevi zahtjev) {
         Integer putaPoslano = zahtjev.getPutaPoslano();
         Integer brojDana = zahtjev.getBrojDana();
-        zahtjev.setBrojDana(brojDana++);
-        if (putaPoslano == brojDana) zahtjev.setZavrseno("1");
+        zahtjev.setPutaPoslano(putaPoslano++);
+        if (putaPoslano == brojDana) zahtjev.setZavrseno(1);
         zfr.edit(zahtjev);
     }
 }

@@ -21,7 +21,6 @@ public class ZahtjeviFacade extends AbstractFacade<Zahtjevi> implements Zahtjevi
     @PersistenceContext(unitName = "msimicic_aplikacija_3-ejbPU")
     private EntityManager em;
 
-    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
@@ -30,7 +29,7 @@ public class ZahtjeviFacade extends AbstractFacade<Zahtjevi> implements Zahtjevi
         super(Zahtjevi.class);
     }
 
-    @Override
+        @Override
     public Zahtjevi findByCityCodeAndUser(Integer cityCode, String korisnik){
         Korisnici k = (Korisnici) em.createQuery("SELECT k FROM Korisnici k WHERE k.korIme = :KOR_IME")
                 .setParameter("KOR_IME", korisnik)
@@ -49,49 +48,16 @@ public class ZahtjeviFacade extends AbstractFacade<Zahtjevi> implements Zahtjevi
         }
     }
 
-    
-    @Override
-    public List<Zahtjevi> getZahtjeviDataParametri(){
-        int c = em.createQuery("SELECT count(z.zahtjevId) FROM Zahtjevi z WHERE z.naredba = :NAREDBA and z.zavrseno = :ZAVRSENO")
-                .setParameter("NAREDBA", "data(parametri)")
-                .setParameter("ZAVRSENO", "0")
-                .getFirstResult();
-        if (c == 0) return null;
-        else {
-        return em.createQuery("SELECT z FROM Zahtjevi z WHERE z.naredba = :NAREDBA and z.zavrseno = :ZAVRSENO")
-                .setParameter("NAREDBA", "data(parametri)")
-                .setParameter("ZAVRSENO", "0")
-                .getResultList();
-        }
-    }
-/*
-    @Override
-    public List<Zahtjevi> getZahtjeviDataDatumi(){
-        int c = em.createQuery("SELECT count(z.zahtjevId) FROM Zahtjevi z WHERE z.naredba = :NAREDBA and z.zavrseno = :ZAVRSENO")
-                .setParameter("NAREDBA", "data(datumi)")
-                .setParameter("ZAVRSENO", "0")
-                .getFirstResult();
-        if (c == 0) return null;
-        else {
-        return em.createQuery("SELECT z FROM Zahtjevi z WHERE z.naredba = :NAREDBA and z.zavrseno = :ZAVRSENO")
-                .setParameter("NAREDBA", "data(datumi)")
-                .setParameter("ZAVRSENO", "0")
-                .getResultList();
-        }
-    }
 
     @Override
-    public List<Zahtjevi> getZahtjeviForecast(){
-        int c = em.createQuery("SELECT count(z.zahtjevId) FROM Zahtjevi z WHERE z.naredba = :NAREDBA and z.zavrseno = :ZAVRSENO")
-                .setParameter("NAREDBA", "forecast")
-                .setParameter("ZAVRSENO", "0")
-                .getFirstResult();
-        if (c == 0) return null;
-        else {
-        return em.createQuery("SELECT z FROM Zahtjevi z WHERE z.naredba = :NAREDBA and z.zavrseno = :ZAVRSENO")
-                .setParameter("NAREDBA", "forecast")
-                .setParameter("ZAVRSENO", "0")
+    public List<Zahtjevi> getZahtjeviData(){
+       // int c = em.createQuery("SELECT count(z.zahtjevId) FROM Zahtjevi z WHERE z.zahtjevId is not null")
+        //        .getFirstResult();
+       // if (c == 0) return null;
+       // else {
+        return em.createQuery("SELECT z FROM Zahtjevi z WHERE z.zavrseno = :ZAVRSENO")
+                .setParameter("ZAVRSENO", 0)
                 .getResultList();
-        }
-    }  */
+       // }
+    }
 }

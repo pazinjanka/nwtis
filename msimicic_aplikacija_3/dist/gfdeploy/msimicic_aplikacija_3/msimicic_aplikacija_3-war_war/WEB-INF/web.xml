@@ -46,15 +46,14 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
-        <servlet-name>Mail</servlet-name>
-        <servlet-class>org.foi.nwtis.msimicic.posta.Mail</servlet-class>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
-    <!-- Map these files with JSF -->
-    <servlet>
         <servlet-name>Meteo</servlet-name>
         <servlet-class>org.foi.nwtis.msimicic.meteo.Meteo</servlet-class>
-        <load-on-startup>3</load-on-startup>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>Mail</servlet-name>
+        <servlet-class>org.foi.nwtis.msimicic.posta.Mail</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>

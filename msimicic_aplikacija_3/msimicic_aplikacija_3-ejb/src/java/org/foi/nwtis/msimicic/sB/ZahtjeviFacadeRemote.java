@@ -29,14 +29,10 @@ public interface ZahtjeviFacadeRemote {
     List<Zahtjevi> findRange(int[] range);
 
     int count();
-
+    
     public Zahtjevi findByCityCodeAndUser(Integer cityCode, String korisnik);
 
-    public List<Zahtjevi> getZahtjeviDataParametri();
-    /*
-    public List<Zahtjevi> getZahtjeviDataDatumi();
+    public List<Zahtjevi> getZahtjeviData();
 
-    public List<Zahtjevi> getZahtjeviForecast();
-     * 
-     */
+
 }

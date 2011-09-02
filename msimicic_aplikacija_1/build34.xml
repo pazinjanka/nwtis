@@ -175,7 +175,7 @@
 				naredba char(20),
 				broj_dana int,
 				puta_poslano int,
-				zavrseno char(20),
+				zavrseno int not null default 0,
 				kor_ime char(10) not null default '',
 				CONSTRAINT korisnici_zahtjevi_FK1 FOREIGN KEY (kor_ime) REFERENCES korisnici (kor_ime),
 				grad_code int not null,

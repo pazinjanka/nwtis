@@ -51,13 +51,13 @@ public class Zahtjevi implements Serializable {
     private Date datumZahtjeva;
     @Column(name = "NAREDBA")
     private String naredba;
-    @Basic(optional = false)
     @Column(name = "BROJ_DANA")
-    private int brojDana;
+    private Integer brojDana;
     @Column(name = "PUTA_POSLANO")
     private Integer putaPoslano;
+    @Basic(optional = false)
     @Column(name = "ZAVRSENO")
-    private String zavrseno;
+    private int zavrseno;
     @Basic(optional = false)
     @Column(name = "GRAD_CODE")
     private int gradCode;
@@ -78,10 +78,10 @@ public class Zahtjevi implements Serializable {
         this.zahtjevId = zahtjevId;
     }
 
-    public Zahtjevi(Integer zahtjevId, Date datumZahtjeva, int brojDana, int gradCode) {
+    public Zahtjevi(Integer zahtjevId, Date datumZahtjeva, int zavrseno, int gradCode) {
         this.zahtjevId = zahtjevId;
         this.datumZahtjeva = datumZahtjeva;
-        this.brojDana = brojDana;
+        this.zavrseno = zavrseno;
         this.gradCode = gradCode;
     }
 
@@ -109,11 +109,11 @@ public class Zahtjevi implements Serializable {
         this.naredba = naredba;
     }
 
-    public int getBrojDana() {
+    public Integer getBrojDana() {
         return brojDana;
     }
 
-    public void setBrojDana(int brojDana) {
+    public void setBrojDana(Integer brojDana) {
         this.brojDana = brojDana;
     }
 
@@ -125,11 +125,11 @@ public class Zahtjevi implements Serializable {
         this.putaPoslano = putaPoslano;
     }
 
-    public String getZavrseno() {
+    public int getZavrseno() {
         return zavrseno;
     }
 
-    public void setZavrseno(String zavrseno) {
+    public void setZavrseno(int zavrseno) {
         this.zavrseno = zavrseno;
     }
 
