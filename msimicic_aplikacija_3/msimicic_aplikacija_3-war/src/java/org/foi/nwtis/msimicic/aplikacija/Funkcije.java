@@ -23,6 +23,7 @@ import org.foi.nwtis.msimicic.eB.ObradjenePoruke;
 import org.foi.nwtis.msimicic.eB.PoslanePoruke;
 import org.foi.nwtis.msimicic.eB.Putovanja;
 import org.foi.nwtis.msimicic.eB.Zahtjevi;
+import org.foi.nwtis.msimicic.meteo.ApiForecastData;
 import org.foi.nwtis.msimicic.meteo.ArrayOfAnyType;
 import org.foi.nwtis.msimicic.meteo.LiveWeatherData;
 import org.foi.nwtis.msimicic.meteo.UnitType;
@@ -152,7 +153,18 @@ public class Funkcije implements Serializable {
             Iterator itr = podaci.getAnyType().iterator();
             response = response + "Kod grada: "+parametri[0]+"\n";
             while (itr.hasNext()){
-                response = response + " "+ itr.next() +"\n";
+                List<Object> list = podaci.getAnyType();
+                Iterator itr1 = list.iterator();
+                while (itr.hasNext()) {
+                    ApiForecastData ap = (ApiForecastData) itr1.next();
+                    response = response + "Naslov: "+ ap.getTitle()
+                                +", opis: "+ ap.getDescription()
+                                +", temperatura (low): "+ ap.getTempLow()
+                                +", temperatura (high): "+ ap.getTempHigh()
+                                +", prognoza: "+ ap.getPrediction()
+                                +", prognoza (short) "+ ap.getShortPrediction()
+                                +", vise informacija: "+ ap.getWebUrl() +"\n\n";
+                }
             }
             Zahtjevi zahtjev = new Zahtjevi();
             zahtjev.setBrojDana(Integer.parseInt(parametri[1]));
