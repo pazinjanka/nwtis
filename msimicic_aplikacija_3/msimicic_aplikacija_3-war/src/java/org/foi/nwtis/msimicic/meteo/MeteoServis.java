@@ -189,8 +189,9 @@ public class MeteoServis extends Thread {
     private void kraj(Zahtjevi zahtjev) {
         Integer putaPoslano = zahtjev.getPutaPoslano();
         Integer brojDana = zahtjev.getBrojDana();
-        zahtjev.setPutaPoslano(putaPoslano++);
-        if (putaPoslano == brojDana) zahtjev.setZavrseno(1);
+        Integer povecaj = putaPoslano + 1;
+        zahtjev.setPutaPoslano(povecaj);
+        if (povecaj == brojDana) zahtjev.setZavrseno(1);
         zfr.edit(zahtjev);
     }
 }
