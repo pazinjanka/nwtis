@@ -93,9 +93,4 @@ public class Meteo extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    @Override
-    public void destroy() {
-        dretva.destroy();
-    }
-
 }

@@ -56,8 +56,8 @@ public class MailServis extends Thread {
 	super.run();
         while (true) {
             try {
-                getData();
                 sendMail();
+                getData();
 		sleep(interval * 1000);
             } catch (Exception e) {
 		System.out.println(e);
@@ -108,6 +108,7 @@ public class MailServis extends Thread {
             System.out.println("Broj poruka je " + procitane);
             if (poruke.length > 0) {
 		for (int i = 0; i < poruke.length; i++) {
+                    System.out.println("Poruka broj: " + i);
                     Message response = poruke[i].reply(false);
                     response.setHeader("Content-Type", "text/plain; charset=\"utf-8\"");
                     try {
@@ -309,8 +310,8 @@ public class MailServis extends Thread {
                     break;
                 case 2:
                     subject = "NWTiS";
-                    code = randomGenerator.nextInt(90000) + 10000;
-                    content = login +";data('"+ code +"', '7')";
+                    code = randomGenerator.nextInt(90000) + 1000;
+                    content = login +";data('60876', '7')";
                     break;
                 case 3:
                     subject = "NWTiS";
@@ -318,12 +319,12 @@ public class MailServis extends Thread {
                     break;
                 case 4:
                     subject = "NWTiS";
-                    code = randomGenerator.nextInt(90000) + 10000;
-                    content = login +";forecast('"+ code +"', '5');";
+                    code = randomGenerator.nextInt(90000) + 1000;
+                    content = login +";forecast('60876', '5');";
                     break;
                 case 5:
                     subject = "NWTiS";
-                    code = randomGenerator.nextInt(90000) + 10000;
+                    code = randomGenerator.nextInt(90000) + 1000;
                     content = login +";stopforecast('"+ code +"');";
                     break;
                 case 6:

@@ -45,69 +45,80 @@ public class MeteoServis extends Thread {
         this.sc = sc;
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
-    }
-
-    @Override
-    public void interrupt() {
-        super.interrupt();
-    }
-
     /**
      * Pregledava zahtjeve iz baze podataka i salje JMS poruke za one koje treba
      * Kod slanja poziva posaljiZahtjev metodu koja dohvaća tvornicu i redcekanja
      */
     private void pregledaj() {
         interval = Integer.parseInt(sc.getInitParameter("intervalJMS"));
-        
+
         String msgText;
         Zahtjevi zahtjev;
         // <editor-fold defaultstate="collapsed" desc="weatherBug">
         String APICODE = "A6458871574";
         WeatherBugWebServices service = new WeatherBugWebServices();
-        WeatherBugWebServicesSoap port = service.getWeatherBugWebServicesSoap();
+        WeatherBugWebServicesSoap port;
         LiveWeatherData podaci;
         // </editor-fold>
-        
+
         List <Zahtjevi> zahtjeviDP = zfr.getZahtjeviData();
         if (zahtjeviDP != null) {
             msgText = "Postovani,\n vasa pretplata na meteoroloske podatke \n";
             Iterator iterator = zahtjeviDP.iterator();
-            p = new Poruka();
+
             while (iterator.hasNext()) {
                 zahtjev = (Zahtjevi) iterator.next();
                 // <editor-fold defaultstate="collapsed" desc="zahtjevi za data() data(parametri);">
                 if (zahtjev.getNaredba().equals("data") || zahtjev.getNaredba().equals("data(parametri")) {
+                    p = new Poruka();
+                    port = service.getWeatherBugWebServicesSoap();
                     podaci = port.getLiveWeatherByCityCode(Integer.toString(zahtjev.getGradCode()), UnitType.METRIC, APICODE);
                     msgText = msgText + "Grad: "+ podaci.getCity()
-                            +", temperatura: "+ podaci.getTemperature()
-                            +", vlaznost zraka: "+podaci.getHumidity()
-                            +", tlak zraka: "+podaci.getPressure()
-                            +", brzina vjetra: "+podaci.getWindSpeed()
-                            +", za dan: "+podaci.getObDateTime().toString()+"\n\n";
+                                +", temperatura: "+ podaci.getTemperature()
+                                +", vlaznost zraka: "+podaci.getHumidity()
+                                +", tlak zraka: "+podaci.getPressure()
+                                +", brzina vjetra: "+podaci.getWindSpeed()
+                                +", za dan: "+podaci.getObDateTime().toString()+"\n\n";
                     this.kraj(zahtjev);
                     p.setKorisnik(zahtjev.getKorisnici());
                     System.out.println("Prva kategorija");
+                    msgText = msgText + "JMS servis...";
+                    p.setSadrzaj(msgText);
+                    p.setNaslov("Meteoroloski podaci");
                 }
                 // </editor-fold>
                 // <editor-fold defaultstate="collapsed" desc="zahtjevi za forecast();">
                 else if (zahtjev.getNaredba().equals("forecast")){
-                    System.out.println("Forecast kategorija");
+                    port = service.getWeatherBugWebServicesSoap();
+                    ArrayOfAnyType forecast = port.getForecastByCityCode(Integer.toString(zahtjev.getGradCode()), UnitType.METRIC, APICODE);
+                    List<Object> list = forecast.getAnyType();
+                    Iterator itr = list.iterator();
+                    while (itr.hasNext()) {
+                        ApiForecastData ap = (ApiForecastData) itr.next();
+                        msgText = msgText + "Naslov: "+ ap.getTitle()
+                                +", opis: "+ ap.getDescription()
+                                +", temperatura (low): "+ ap.getTempLow()
+                                +", temperatura (high): "+ ap.getTempHigh()
+                                +", prognoza: "+ ap.getPrediction()
+                                +", prognoza (short) "+ ap.getShortPrediction()
+                                +", vise informacija: "+ ap.getWebUrl() +"\n\n";
+                        this.kraj(zahtjev);
+                        p.setKorisnik(zahtjev.getKorisnici());
+                        System.out.println("Forecast kategorija");
+                    }
                 }
                 // </editor-fold>
-            }
-            msgText = msgText + "JMS servis...";
-            p.setSadrzaj(msgText);
-            p.setNaslov("Meteoroloski podaci");
-            //slanje
-            if (p != null){
-                try {
-                    posaljiZahtjev(p);
-                    System.out.println("Podaci poslani");
-                } catch (Exception e) {
-                    System.out.println("Neuspješno slanje JMS poruke"+e);
+                else if (zahtjev.getNaredba().equals("data(period)")){
+                    System.out.println("Data(perod) kategorija");
+                }
+
+                if (p != null){
+                    try {
+                        posaljiZahtjev(p);
+                        System.out.println("Podaci poslani");
+                    } catch (Exception e) {
+                        System.out.println("Neuspješno slanje JMS poruke"+e);
+                    }
                 }
             }
         }

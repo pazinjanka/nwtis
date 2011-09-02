@@ -192,8 +192,9 @@ public class Funkcije implements Serializable {
                 zahtjev.setZavrseno(0);
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 java.sql.Date dOd = new java.sql.Date(formatter.parse(datumi[0]).getTime());
-                zahtjev.setDatumdo(dOd);
-                java.sql.Date dDo = new java.sql.Date(formatter.parse(datumi[1]).getTime());
+                zahtjev.setDatumod(dOd);
+                DateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+                java.sql.Date dDo = new java.sql.Date(formatter2.parse(datumi[1]).getTime());
                 zahtjev.setDatumdo(dDo);
                 zfr.create(zahtjev);
             }
