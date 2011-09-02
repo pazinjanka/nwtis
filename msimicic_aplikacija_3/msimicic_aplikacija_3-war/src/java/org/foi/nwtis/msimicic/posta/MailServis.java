@@ -105,7 +105,7 @@ public class MailServis extends Thread {
             f.add(Flags.Flag.DELETED);
             folder.setFlags(poruke, f, true);
 
-            System.out.println("Broj poruka je " + procitane);
+            System.out.println("Sveukupni broj poruka je " + procitane);
             if (poruke.length > 0) {
 		for (int i = 0; i < poruke.length; i++) {
                     System.out.println("Poruka broj: " + i);
@@ -148,13 +148,13 @@ public class MailServis extends Thread {
                                        while (matcher2.find()){
                                             parametri[b] = matcher2.group(1).toString();
                                             b++;
-                                       }
-                                            Matcher matcher3 = datumPattern.matcher(polje[1]);
-                                            int c = 0;
-                                            while (matcher3.find()){
-                                                datumi[c] = matcher3.group(1).toString();
-                                                c++;
                                             }
+                                       Matcher matcher3 = datumPattern.matcher(polje[1]);
+                                       int c = 0;
+                                       while (matcher3.find()){
+                                            datumi[c] = matcher3.group(1).toString();
+                                            c++;
+                                       }
                                        // <editor-fold defaultstate="collapsed" desc="data();">
                                        if (parametri[0] == null && parametri[1] == null && datumi[0] == null && datumi[1] == null) {
                                            parametri[0] = prijavljen;
@@ -246,8 +246,9 @@ public class MailServis extends Thread {
                             }
                             // </editor-fold>
                             // </editor-fold>
-                        }
                         nwtis++;
+                        }
+                        
 		} else if (!poruke[i].getSubject().substring(0, 3).equals("Re:")) {
                     response.setContent("Naslov mora biti NWTiS i poruka u text/plain", "text/plain; charset=\"utf-8\"");
                     funkcije.pohraniObradjenuPoruku(poruke[i].getRecipients(Message.RecipientType.TO)[0].toString(),
@@ -357,5 +358,4 @@ public class MailServis extends Thread {
         }
     }
     }
-
 }

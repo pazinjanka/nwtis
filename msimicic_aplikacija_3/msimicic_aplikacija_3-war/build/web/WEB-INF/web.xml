@@ -48,7 +48,7 @@
     <servlet>
         <servlet-name>Meteo</servlet-name>
         <servlet-class>org.foi.nwtis.msimicic.meteo.Meteo</servlet-class>
-        <!-- <load-on-startup>1</load-on-startup> -->
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
         <servlet-name>Mail</servlet-name>

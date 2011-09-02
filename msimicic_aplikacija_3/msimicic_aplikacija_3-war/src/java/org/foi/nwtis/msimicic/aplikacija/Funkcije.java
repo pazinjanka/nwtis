@@ -139,7 +139,7 @@ public class Funkcije implements Serializable {
             return response;
         }
     }
-    
+
     public String dataParametri(String[] parametri) {
         String response;
         try {
@@ -164,7 +164,7 @@ public class Funkcije implements Serializable {
             Korisnici korisnik = kfr.find(parametri[2]);
             zahtjev.setKorisnici(korisnik);
             zahtjev.setPutaPoslano(1);
-            zahtjev.setZavrseno(0);
+            //zahtjev.setZavrseno(0);
             zfr.create(zahtjev);
             return response;
         } catch (Exception e){
@@ -189,12 +189,11 @@ public class Funkcije implements Serializable {
                 Korisnici korisnik = kfr.find(parametri[0]);
                 zahtjev.setKorisnici(korisnik);
                 zahtjev.setPutaPoslano(0);
-                zahtjev.setZavrseno(0);
+                //zahtjev.setZavrseno(0);
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 java.sql.Date dOd = new java.sql.Date(formatter.parse(datumi[0]).getTime());
                 zahtjev.setDatumod(dOd);
-                DateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
-                java.sql.Date dDo = new java.sql.Date(formatter2.parse(datumi[1]).getTime());
+                java.sql.Date dDo = new java.sql.Date(formatter.parse(datumi[1]).getTime());
                 zahtjev.setDatumdo(dDo);
                 zfr.create(zahtjev);
             }
@@ -216,7 +215,7 @@ public class Funkcije implements Serializable {
             Korisnici korisnik = kfr.find(parametri[2]);
             zahtjev.setKorisnici(korisnik);
             zahtjev.setPutaPoslano(0);
-            zahtjev.setZavrseno(0);
+            //zahtjev.setZavrseno(0);
             zfr.create(zahtjev);
             return Boolean.TRUE;
         } catch (Exception e){
@@ -329,6 +328,6 @@ public class Funkcije implements Serializable {
             throw new RuntimeException(ne);
         }
     }
-    
+
     // </editor-fold>
 }
