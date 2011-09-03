@@ -44,4 +44,9 @@
                 <to-view-id>/index.xhtml</to-view-id>
             </navigation-case>
         </navigation-rule>
+    <managed-bean>
+        <managed-bean-name>putovanje</managed-bean-name>
+        <managed-bean-class>org.foi.nwtis.msimicic.aplikacija.Putovanje</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 </faces-config>

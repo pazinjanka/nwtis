@@ -10,5 +10,5 @@
 <entry key="user.password">msimicic</entry>
 <entry key="user.database">nwtis_msimicic_bp_1</entry>
 <entry key="driver.database">com.mysql.jdbc.Driver</entry>
-<entry key="interval">30</entry>
+<entry key="interval">200</entry>
 </properties>
